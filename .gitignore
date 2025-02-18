@@ -2,7 +2,6 @@
 !data/*.csv
 .DS_Store
 staticfiles/
-.pdf
 
 # Django stuff:
 *.log
@@ -23,6 +22,7 @@ media/Images/*
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+videoenv/
 
 # VisualStudioCode.gitignore from https://github.com/github/gitignore/blob/master/Global/VisualStudioCode.gitignore under CC0 1.0 Universal
 .vscode/*
@@ -31,3 +31,4 @@ pip-selfcheck.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+tango_w_jango_book.pdf
