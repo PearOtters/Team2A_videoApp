@@ -25,7 +25,8 @@ Windows:
 py 3.11 -m venv <path-to-venv>
 ```
 
-```Anaconda prompt
+Anaconda prompt:
+```bash
 conda create -n <path-to-venv> python=3.11
 ```
 
@@ -39,7 +40,7 @@ Activate the virtual environment using the commands for your OS and CLI of choic
 | | Powershell | \<venv-path>/bin/Activate.ps1 |
 | Windows | cmd.exe | \<venv-path>\Scripts\activate.bat |
 | | Powershell | \<venv-path>\Scripts\Activate.ps1 |
-| Anaconda Prompt || conda activate <path-to-venv>
+| Anaconda Prompt || conda activate <venv-path> |
 
 Dependencies are then installed using `pip`:
 
