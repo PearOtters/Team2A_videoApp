@@ -17,7 +17,20 @@ def view_categories(request):
     return render(request, 'video/categories.html', context=context_dict)
 
 def category_detail(request, category_slug):
-    return HttpResponse("Under construction...")
+    context_dict = {}
+    try:
+        category = Category.objects.get(slug=category_slug)
+        videos = Video.objects.filter(category=category)
+        context_dict['videos'] = videos
+        context_dict['videosViews'] = videos.order_by('-views')
+        context_dict['videosLikes'] = videos.order_by('-likes')
+        context_dict['videosCreated'] = videos.order_by('-created')
+        context_dict['videosDislikes'] = videos.order_by('-dislikes')
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        context_dict['category'] = None
+        context_dict['videos'] = None
+    return render(request, 'video/category_detail.html', context=context_dict)
 
 def video_detail(request, category_slug, video_slug):
     return HttpResponse("Under construction...")
