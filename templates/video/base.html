@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="{% static 'video/css/style.css' %}">
+         -->
+
+        <title>
+            Video - 
+            {% block title %}
+            {% endblock %}
+        </title>
+    </head>
+
+    <body>
+        <header>
+            <h1>Header</h1>
+            <hr />
+        </header>
+
+        <main>
+            {% block body_block %}
+            {% endblock %}
+        </main>
+
+        <footer>
+            <hr />
+            <p>footer</p>
+        </footer>
+    </body>
+</html>
