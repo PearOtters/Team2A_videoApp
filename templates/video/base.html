@@ -6,22 +6,29 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <!-- 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <link rel="stylesheet" href="{% static 'video/css/style.css' %}">
-         -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
         <title>
             Video - 
-            {% block title %}
+            {% block title_block %}
             {% endblock %}
         </title>
     </head>
 
     <body>
         <header>
-            <h1>Header</h1>
+            <ul>
+                <li><a href="{% url 'video:index' %}">Home</a></li>
+                <li><a href="{% url 'video:view_categories' %}">Categories</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'video:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'video:login' %}">Login</a></li>
+                    <li><a href="{% url 'video:register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+            <h1></h1>
             <hr />
         </header>
 
