@@ -16,10 +16,10 @@ def view_categories(request):
     context_dict['categories'] = Category.objects.order_by('-video_count')
     return render(request, 'video/categories.html', context=context_dict)
 
-def category_detail(request):
+def category_detail(request, category_slug):
     return HttpResponse("Under construction...")
 
-def video_detail(request):
+def video_detail(request, category_slug, video_slug):
     return HttpResponse("Under construction...")
 
 def user_login(request):
@@ -34,7 +34,7 @@ def user_logout(request):
     return redirect(reverse('video:index'))
 
 @login_required
-def upload(request):
+def upload(request, category_slug):
     return HttpResponse("Under construction...")
 
 @login_required
