@@ -8,7 +8,8 @@ staticfiles/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-media/Images/*
+media/thumnails/*
+media/videos/*
 
 __pypackages__/
 __pycache__/
