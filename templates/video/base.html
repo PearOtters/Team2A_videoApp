@@ -20,7 +20,6 @@
         <header>
             <ul>
                 <li><a href="{% url 'video:index' %}">Home</a></li>
-                <li><a href="{% url 'video:view_categories' %}">Categories</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'video:logout' %}">Logout</a></li>
                 {% else %}

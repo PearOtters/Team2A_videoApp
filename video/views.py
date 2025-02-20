@@ -11,6 +11,7 @@ def index(request):
 def about(request):
     return HttpResponse("Under construction...")
 
+### Unused view ###
 def view_categories(request):
     context_dict = {}
     context_dict['categories'] = Category.objects.order_by('-video_count')
@@ -50,6 +51,7 @@ def user_logout(request):
 def upload(request, category_slug):
     return HttpResponse("Under construction...")
 
+### Unused view ###
 @login_required
 def add_category(request):
     return HttpResponse("Under construction...")
