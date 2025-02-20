@@ -71,8 +71,8 @@ def populate():
         category=categorie_models[0],
         user=userProfile1,
         title="All The Stars Kendrick Lamar",
-        video_path="media/videos/AllTheStars_KendrickLamar.mp4",
-        thumbnail_path="media/thumbnails/AllTheStars_KendrickLamar.jpg",
+        video_path="static/populateMedia/videos/AllTheStars_KendrickLamar.mp4",
+        thumbnail_path="static/populateMedia/thumbnails/AllTheStars_KendrickLamar.jpg",
         description="Black Panther The Album out now\n" + 
         "http://smarturl.it/BlackPantherAlbum\n\n" + 
         "http://vevo.ly/3WpVJn",
