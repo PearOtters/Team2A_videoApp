@@ -18,10 +18,10 @@ def populate():
     user3 = add_user("user3", "user3@gmail.com", 1234)
     user4 = add_user("user4", "user4@gmail.com", 1234)
 
-    userProfile1 = add_userProfile(user1)
-    userProfile2 = add_userProfile(user2)
-    userProfile3 = add_userProfile(user3)
-    userProfile4 = add_userProfile(user4)
+    userProfile1 = add_userProfile(user1, score=5)
+    userProfile2 = add_userProfile(user2, score=10)
+    userProfile3 = add_userProfile(user3, score=15)
+    userProfile4 = add_userProfile(user4, score=20)
 
     categories = [
         {'name': 'Music', 'video_count': 0},
@@ -126,9 +126,10 @@ def add_video(category, user, title, video_path, thumbnail_path, description="No
     video.save()
     return video
 
-def add_userProfile(user, profile_picture=None):
+def add_userProfile(user, profile_picture=None, score=0):
     userProfile = UserProfile.objects.get_or_create(user=user, 
-                                                    profile_picture=profile_picture)[0]
+                                                    profile_picture=profile_picture,
+                                                    score=score)[0]
     userProfile.save()
     return userProfile
 
