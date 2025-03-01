@@ -3,7 +3,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'videoapp_project.settings')
 
 import django
 django.setup()
-from video.models import Category, Video, UserProfile, Comment, Reply
+from YouHate.models import Category, Video, UserProfile, Comment, Reply
 from django.core.files import File
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -153,6 +153,6 @@ def add_reply(comment, user, body, created=timezone.now(), likes=0, dislikes=0):
     return reply
     
 if __name__ == '__main__':
-    print("Starting VideoApp population script...")
+    print("Starting YouHateApp population script...")
     populate()
-    print("VideoApp population script completed!")
+    print("YouHateApp population script completed!")

@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from video.models import Video, Category, Comment, UserProfile, Reply
+from YouHate.models import Video, Category, Comment, UserProfile, Reply
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 def index(request):
-    return render(request, 'video/index.html')
+    return render(request, 'YouHate/index.html')
 
 def about(request):
     return HttpResponse("Under construction...")
@@ -15,7 +15,7 @@ def about(request):
 def view_categories(request):
     context_dict = {}
     context_dict['categories'] = Category.objects.order_by('-video_count')
-    return render(request, 'video/categories.html', context=context_dict)
+    return render(request, 'YouHate/categories.html', context=context_dict)
 
 def category_detail(request, category_slug):
     context_dict = {}
@@ -31,7 +31,7 @@ def category_detail(request, category_slug):
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['videos'] = None
-    return render(request, 'video/category_detail.html', context=context_dict)
+    return render(request, 'YouHate/category_detail.html', context=context_dict)
 
 def video_detail(request, category_slug, video_slug):
     return HttpResponse("Under construction...")
