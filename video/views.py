@@ -45,7 +45,7 @@ def register(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('video:index'))
+    return redirect(reverse('index'))
 
 @login_required
 def upload(request, category_slug):

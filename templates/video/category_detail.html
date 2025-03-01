@@ -12,7 +12,7 @@
             {% if videos %}
                 <ul>
                 {% for video in videosViews %}
-                    <li><a href="{% url 'video:video_detail' category.slug video.slug %}">{{ video.title }}</a></li>
+                    <li><a href="{% url 'video_detail' category.slug video.slug %}">{{ video.title }}</a></li>
                 {% endfor %}
                 </ul>
             {% else %}
