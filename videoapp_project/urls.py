@@ -15,10 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from video import views
+from YouHate import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('video/', include('video.urls')),
     path('', views.index, name='index'),
-]
+    path('about/', views.about, name='about'),
+    path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    path('register/', views.register, name='register'),
+    path('add_category/', views.add_category, name='add_category'),
+    path('<slug:category_slug>/', views.category_detail, name='category_detail'),
+    path('<slug:category_slug>/upload/', views.upload, name='upload'),
+    path('<slug:category_slug>/<slug:video_slug>/', views.video_detail, name='video_detail'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

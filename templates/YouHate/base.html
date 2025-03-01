@@ -19,12 +19,12 @@
     <body>
         <header>
             <ul>
-                <li><a href="{% url 'video:index' %}">Home</a></li>
+                <li><a href="{% url 'index' %}">Home</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'video:logout' %}">Logout</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
-                    <li><a href="{% url 'video:login' %}">Login</a></li>
-                    <li><a href="{% url 'video:register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
                 {% endif %}
             </ul>
             <h1></h1>
