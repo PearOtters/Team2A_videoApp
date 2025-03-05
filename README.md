@@ -87,3 +87,5 @@ Click on branches and then select create new branch and follow instructions. Onc
 ```
 
 Once you have done this you can now commit your code to your branch in the usual way with git add * etc.
+
+WHEN MERGING ALWAYS ENSURE IT IS TO 'ORIGIN MAIN' NOT JUST 'MAIN'
