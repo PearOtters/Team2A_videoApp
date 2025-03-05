@@ -68,3 +68,22 @@ To run the Django web app, run the following:
 ```bash
 python manage.py runserver
 ```
+
+## Creating and using branches
+
+If creating branch in terminal:
+
+```bash
+  git checkout -b branch-name
+```
+This will also move you within your terminal into the branch. If this is done you can then do the normal git add * etc to commit.
+
+If creating branch on webclient:
+
+Click on branches and then select create new branch and follow instructions. Once done in terminal do command:
+
+```bash
+  git checkout branch-name
+```
+
+Once you have done this you can now commit your code to your branch in the usual way with git add * etc.
