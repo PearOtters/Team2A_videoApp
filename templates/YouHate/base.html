@@ -8,9 +8,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
         <title>
-            YouHate - 
+            YouTrash - 
             {% block title_block %}
             {% endblock %}
         </title>
@@ -48,13 +48,16 @@
         <aside>
             <a href="home.html"><img src="media/" alt="Logo" id="logo"></a>
             <h2>Categories</h2>
+            <select name="allCategories" id="allCategoriesDropDown">
+                {% for category in baseCategoryNames %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
             <h3>Trending</h3>
             <ul>
-                <li><a href="">Category 1</a></li>
-                <li><a href="">Category 2</a></li>
-                <li><a href="">Category 3</a></li>
-                <li><a href="">Category 4</a></li>
-                <li><a href="">Category 5</a></li>
+                {% for slug, name in baseTop5Categories %}
+                    <li><a href="{{ slug }}">{{ name }}</a></li>
+                {% endfor %}
             </ul>
         </aside>
         <main>
