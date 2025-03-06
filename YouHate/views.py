@@ -6,7 +6,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 def index(request):
-    return render(request, 'YouHate/index.html')
+    context_dict = {}
+    try:
+        context_dict['categories'] = Category.objects.values_list('name', flat=True).order_by('-video_count')[:5]
+        context_dict['videos'] = Video.objects.all()
+    except Category.DoesNotExist:
+        context_dict['categories'] = None
+        context_dict['videos'] = None
+    return render(request, 'YouHate/index.html', context=context_dict)
 
 def about(request):
     return HttpResponse("Under construction...")

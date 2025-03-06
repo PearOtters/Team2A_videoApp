@@ -6,4 +6,24 @@
 {% block body_block %}
     <h2>Home</h2>
     <p>Welcome to the home page.</p>
+
+    <div>
+        <h2>All Recent</h2>
+
+    </div>
+
+    {% for category in categories %}
+    <div>
+        <h2>{{ category }}</h2>
+        {% for v in videos %}
+        {% if v.category.name == category %}
+            <!-- EXAMPLE: HOW TO DISPLAY VIDEO
+             <video controls>
+                <source src="{{ v.video.url }}" type="video/mp4">
+            </video> -->
+            <image class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></image>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
 {% endblock %}

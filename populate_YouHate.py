@@ -81,6 +81,18 @@ def populate():
         dislikes=18_000
     )
 
+    video2 = add_video(
+        category = categorie_models[31],
+        user=userProfile1,
+        title="Me At The Zoo",
+        video_path="static/populateMedia/videos/MeAtTheZoo.mp4",
+        thumbnail_path="static/populateMedia/thumbnails/MeAtTheZoo.jpg",
+        description="Microplastics are accumulating in human brains at an alarming rate",
+        views=351_072_792,
+        likes=17_000_000,
+        dislikes=0
+    )
+
     comments = [
         {'video': video1, 'user': userProfile3, 'body': 'Amazing song!', 'likes': 100_000, 'dislikes': 10},
         {'video': video1, 'user': userProfile2, 'body': 'Great!', 'likes': 10_000, 'dislikes': 100_000},
