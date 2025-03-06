@@ -20,25 +20,28 @@
         <!-- Header -->
         <header>
             <ul>
-                <search>
-                    <form>
-                        <select name="filters" id="filters">
-                            <option value="creator">Creator</option>
-                            <option value="video">Video</option>
-                        </select>
-                        <input name="vSearch" id="vSearch" placeholder="Search">
-                        <input type="submit" id="submit" value="Go">
-                    </form>
-                </search>
-                <button type="button" onclick="">Randomise</button>
-                {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-                {% else %}
-                    <li><a href="% url 'about' %">About</a></li>
-                    <li><a href="{% url 'login' %}">Sign In/Register</a></li>
-                {% endif %}
+                <div id="searchContainer" class="topBarItems">
+                    <search>
+                        <form>
+                            <select name="filters" id="filters">
+                                <option value="creator">Creator</option>
+                                <option value="video">Video</option>
+                            </select>
+                            <input name="vSearch" id="vSearch" placeholder="Search">
+                            <input type="submit" id="submit" value="Go">
+                        </form>
+                    </search>
+                    <button type="button" onclick="">Randomise</button>
+                </div>
+                <div id="aboutUserActionButtons">
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="% url 'about' %">About</a></li>
+                        <li><a href="{% url 'login' %}">Sign In/Register</a></li>
+                    {% endif %}
+                </div>
             </ul>
-            <h1></h1>
             <hr />
         </header>
         <!-- Sidebar -->
