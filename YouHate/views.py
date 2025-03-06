@@ -4,9 +4,12 @@ from YouHate.models import Video, Category, Comment, UserProfile, Reply
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.db import DatabaseError
 
 def index(request):
-    return render(request, 'YouHate/index.html')
+    context_dic = {}
+    return base(request, 'YouHate/index.html', context_dic)
+    # return render(request, 'YouHate/index.html', context_dic)
 
 def about(request):
     return HttpResponse("Under construction...")
@@ -32,6 +35,17 @@ def category_detail(request, category_slug):
         context_dict['category'] = None
         context_dict['videos'] = None
     return render(request, 'YouHate/category_detail.html', context=context_dict)
+
+def base(request, url, context_dic):
+    try:
+        categories = Category.objects.values_list('name', flat=True)
+        top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
+        context_dic['baseCategoryNames'] = categories
+        context_dic['baseTop5Categories'] = top5
+    except Category.DoesNotExist:
+        context_dic['baseCategoryNames'] = None
+    return render(request, url, context=context_dic)
+
 
 def video_detail(request, category_slug, video_slug):
     return HttpResponse("Under construction...")
