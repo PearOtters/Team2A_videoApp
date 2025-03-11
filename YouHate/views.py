@@ -11,11 +11,12 @@ def index(request):
     try:
         context_dict['categories'] = Category.objects.values_list('name', flat=True).order_by('-video_count')[:5]
         context_dict['videos'] = Video.objects.all()
+        context_dict['recentVideos'] = Video.objects.order_by('created')[:10]
     except Category.DoesNotExist:
         context_dict['categories'] = None
         context_dict['videos'] = None
+        context_dict['recentVideos'] = None
     return base(request, 'YouHate/index.html', context_dict)
-    # return render(request, 'YouHate/index.html', context=context_dict, context_dic)
 
 def about(request):
     return HttpResponse("Under construction...")
@@ -32,15 +33,15 @@ def category_detail(request, category_slug):
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
         context_dict['videos'] = videos
-        context_dict['videosViews'] = videos.order_by('-views')
-        context_dict['videosLikes'] = videos.order_by('-likes')
-        context_dict['videosCreated'] = videos.order_by('-created')
-        context_dict['videosDislikes'] = videos.order_by('-dislikes')
+        context_dict['recentVideos'] = videos.order_by('created')
+        context_dict['dislikedVideos'] = videos.order_by('-dislikes')
+        context_dict['mostViewedVideos'] = videos.order_by('-views')
+        context_dict['leastViewedVideos'] = videos.order_by('views')
         context_dict['category'] = category
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['videos'] = None
-    return render(request, 'YouHate/category_detail.html', context=context_dict)
+    return base(request, 'YouHate/category_detail.html', context_dict)
 
 def base(request, url, context_dic):
     try:

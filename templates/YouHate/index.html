@@ -4,26 +4,48 @@
 {% block title %}Home{% endblock %}
 
 {% block body_block %}
-    <h2>Home</h2>
+    <h1>Home</h1>
     <p>Welcome to the home page.</p>
 
-    <div>
-        <h2>All Recent</h2>
-
+    <h2>All Recent</h2>
+    <div class="videoBlock">
+        {% for v in recentVideos %}
+            <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+        {% endfor %}
     </div>
 
     {% for category in categories %}
     <div>
         <h2>{{ category }}</h2>
-        {% for v in videos %}
-        {% if v.category.name == category %}
-            <!-- EXAMPLE: HOW TO DISPLAY VIDEO
-             <video controls>
-                <source src="{{ v.video.url }}" type="video/mp4">
-            </video> -->
-            <image class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></image>
-        {% endif %}
-        {% endfor %}
-    </div>
+
+        <select id="sort" name="sort" style="float:right">
+            <option value="">Sort By</option>
+            <option value="-dislikes">Dislikes</option>
+            <option value="created">Recent</option>
+            <option value="-views">Most Viewed</option>
+            <option value="views">Least Viewed</option>
+        </select>
+
+        <div class="videoBlock">
+            {% for v in videos %}
+            {% if v.category.name == category %}
+                <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+            {% endif %}
+            {% endfor %}
+        </div>
+    <div>
     {% endfor %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#videoBlock").on("wheel", function (event) {
+                event.preventDefault();
+                
+                let scrollAmount = event.originalEvent.deltaY || event.originalEvent.deltaX; 
+                $(this).stop().animate({
+                    scrollLeft: "+=" + scrollAmount
+                }, 200); // Adjust speed (200ms) for smooth scrolling
+            });
+        });
+    </script>             
 {% endblock %}
