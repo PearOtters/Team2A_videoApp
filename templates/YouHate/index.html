@@ -8,21 +8,32 @@
     <p>Welcome to the home page.</p>
 
     <h2>All Recent</h2>
-    <div class="videoBlock" id="videoBlock">
+    <div class="videoBlock">
         {% for v in recentVideos %}
             <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
         {% endfor %}
     </div>
 
     {% for category in categories %}
-    <h2>{{ category }}</h2>
-    <div class="videoBlock" id="videoBlock">
-        {% for v in videos %}
-        {% if v.category.name == category %}
-            <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
-        {% endif %}
-        {% endfor %}
-    </div>
+    <div>
+        <h2>{{ category }}</h2>
+
+        <select id="sort" name="sort" style="float:right">
+            <option value="">Sort By</option>
+            <option value="-dislikes">Dislikes</option>
+            <option value="created">Recent</option>
+            <option value="-views">Most Viewed</option>
+            <option value="views">Least Viewed</option>
+        </select>
+
+        <div class="videoBlock">
+            {% for v in videos %}
+            {% if v.category.name == category %}
+                <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+            {% endif %}
+            {% endfor %}
+        </div>
+    <div>
     {% endfor %}
 
     <script type="text/javascript">
