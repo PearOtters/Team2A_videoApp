@@ -10,11 +10,33 @@
         <h1>{{ category.name }}</h1>
         <div>
             {% if videos %}
-                <ul>
-                {% for video in videosViews %}
-                    <li><a href="{% url 'video_detail' category.slug video.slug %}">{{ video.title }}</a></li>
-                {% endfor %}
-                </ul>
+                <h2>All Recent</h2>
+                <div class="videoBlock">
+                    {% for v in recentVideos %}
+                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    {% endfor %}
+                </div>
+
+                <h2>Most Disliked</h2>
+                <div class="videoBlock">
+                    {% for v in dislikedVideos %}
+                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    {% endfor %}
+                </div>
+
+                <h2>Most Viewed</h2>
+                <div class="videoBlock">
+                    {% for v in mostViewedVideos %}
+                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    {% endfor %}
+                </div>
+
+                <h2>Least Viewed</h2>
+                <div class="videoBlock">
+                    {% for v in leastViewedVideos %}
+                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    {% endfor %}
+                </div>
             {% else %}
                 <p>No videos found.</p>
             {% endif %}

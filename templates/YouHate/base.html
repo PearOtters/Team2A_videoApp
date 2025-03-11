@@ -47,7 +47,7 @@
         </header>
         <!-- Sidebar -->
         <aside>
-            <a href="home.html"><img src="media/" alt="Logo" id="logo"></a>
+            <a href="{% url 'index' %}"><img src="media/" alt="Logo" id="logo"></a>
             <h2>Categories</h2>
             <select name="allCategories" id="allCategoriesDropDown">
                 {% for category in baseCategoryNames %}
