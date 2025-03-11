@@ -11,11 +11,12 @@ def index(request):
     try:
         context_dict['categories'] = Category.objects.values_list('name', flat=True).order_by('-video_count')[:5]
         context_dict['videos'] = Video.objects.all()
+        context_dict['recentVideos'] = Video.objects.order_by('created')[:10]
     except Category.DoesNotExist:
         context_dict['categories'] = None
         context_dict['videos'] = None
+        context_dict['recentVideos'] = None
     return base(request, 'YouHate/index.html', context_dict)
-    # return render(request, 'YouHate/index.html', context=context_dict, context_dic)
 
 def about(request):
     return HttpResponse("Under construction...")
