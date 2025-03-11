@@ -1,18 +1,28 @@
 html, body {
-    height: 100%;
     margin: 0;
+    height: 100%;
+}
+
+body {
+    display: grid;
+    grid-template-areas:
+        "aside header"
+        "aside main"
+        "aside footer";
+    grid-template-columns: 15vw 1fr;
+    grid-template-rows: auto 1fr auto; 
+    min-height: 100vh;
 }
 
 header {
-    position: fixed;
+    grid-area: header;
+    height: 10vh; 
     display: flex;
     justify-content: space-between;
-    top: 0px;
-    right: 0px;
-    margin: 0px;
-    padding: 0px;
-    height: 10vh;
-    width: 85vw;
+    align-items: center;
+    padding: 0;
+    border: 2px solid black;
+    border-left: 0;
 }
 
 #searchContainer {
@@ -20,7 +30,6 @@ header {
     padding: 0px;
     height: 100%;
     width: 80%;
-    border-bottom: 2px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,6 +77,7 @@ form {
     width: 85%;
     margin: 0px;
     padding: 0px;
+    padding-left: 2vw;
     border: 0px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
@@ -128,13 +138,11 @@ form {
 }
 
 aside {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 15vw;
+    grid-area: aside;
+    background-color: #f5f5f5;
     display: flex;
     flex-direction: column;
+    padding: 1rem;
     border-right: 2px solid black;
 }
 
@@ -154,9 +162,12 @@ aside {
 }
 
 main {
-    background-color: aqua;
+    grid-area: main;
+    padding: 1rem;
 }
 
 footer {
-    height: 10vh;
+    grid-area: footer;
+    text-align: center;
+    padding: 1rem;
 }
