@@ -43,6 +43,26 @@ def category_detail(request, category_slug):
         context_dict['videos'] = None
     return base(request, 'YouHate/category_detail.html', context_dict)
 
+def video_detail(request, category_slug, video_slug):
+    context_dict = {}
+    try:
+        category = Category.objects.get(slug=category_slug)
+        videos = Video.objects.filter(category=category)
+        thisVideo = videos.filter(slug=video_slug)[0]
+        suggested = videos.order_by('-dislikes')
+
+        context_dict['comments'] = Comment.objects.filter(video=thisVideo)
+        context_dict['replies'] = Reply.objects.all()
+        context_dict['thisVideo'] = thisVideo
+        context_dict['suggestedVideo'] = suggested[0] # if not (suggested[0] in suggested.filter(slug=video_slug)) else suggested[1]
+
+    except Video.DoesNotExist:
+        context_dict['comments'] = None
+        context_dict['replies'] = None
+        context_dict['thisVideo'] = None
+        context_dict['suggestedVideo'] = None
+    return base(request, "YouHate/video_detail.html", context_dict)
+
 def base(request, url, context_dic):
     try:
         categories = Category.objects.values_list('name', flat=True)
@@ -52,10 +72,6 @@ def base(request, url, context_dic):
     except Category.DoesNotExist:
         context_dic['baseCategoryNames'] = None
     return render(request, url, context=context_dic)
-
-
-def video_detail(request, category_slug, video_slug):
-    return HttpResponse("Under construction...")
 
 def user_login(request):
     return HttpResponse("Under construction...")

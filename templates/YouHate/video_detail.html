@@ -1,0 +1,54 @@
+{% extends 'YouHate/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    {{ thisVideo.title }}
+{% endblock %}
+
+{% block body_block %}
+    <div id="videoPageContainer">
+        <div id="videoContainer">
+        {% if thisVideo %}
+            <video id="video" controls>
+                <source src="{{ thisVideo.video.url }}" type="video/mp4">
+            </video>
+        {% endif %}
+        </div>
+        <div id="suggested">
+            <h2>We Suggest</h2>
+            {% if suggestedVideo %}
+                <div class="videoBlock">
+                    <a href="{% url 'video_detail' suggestedVideo.category.slug suggestedVideo.slug %}"><img class="videoThumbnail" style="width:50%" src="{{ suggestedVideo.thumbnail.url }}" alt=""></img></a>
+                </div>        
+            {% endif %}
+        </div>
+        <div></div>
+        <div id="comments">
+            <h2>Comments</h2>
+            {% if comments %}
+                {% for c in comments %}
+                    <div class="comment">
+                        <p>{{ c.body }}</p>
+                    </div>
+                    {% for r in replies %}
+                        {% if r.comment == c %}
+                            <div class="reply">
+                                <p>{{ r.body }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div id="videoInformation">
+            <div id="user">
+                <h2>{{ thisVideo.user.user.username }}</h2>
+                <img id="profilePicture" src="{{ thisVideo.user.profile_picture.url }}" alt="Profile">
+            </div>
+            <div id="description">
+                <h2>{{ thisVideo.title }}</h2>
+                <p>{{ thisVideo.description }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

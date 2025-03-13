@@ -10,7 +10,9 @@
     <h2>All Recent</h2>
     <div class="videoBlock">
         {% for v in recentVideos %}
-            <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+        <div class="videoThumbnail">
+            <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+        </div>
         {% endfor %}
     </div>
 
