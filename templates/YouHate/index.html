@@ -12,6 +12,7 @@
         {% for v in recentVideos %}
         <div class="videoThumbnail">
             <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+            <h3>{{ v.title }}</h3>
         </div>
         {% endfor %}
     </div>
@@ -31,7 +32,10 @@
         <div class="videoBlock">
             {% for v in videos %}
             {% if v.category.name == category %}
-                <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+            <div class="videoThumbnail">
+                <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+                <h3>{{ v.title }}</h3>
+            </div>
             {% endif %}
             {% endfor %}
         </div>

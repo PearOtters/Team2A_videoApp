@@ -46,6 +46,9 @@ main {
 }
 
 .videoThumbnail {
+  display: flex;
+  flex-direction: column;
+  background-color: darkgray;
   width: 25%; 
   max-width: 100%;
   height: auto;
