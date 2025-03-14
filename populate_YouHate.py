@@ -138,10 +138,14 @@ def add_video(category, user, title, video_path, thumbnail_path, description="No
     video.save()
     return video
 
-def add_userProfile(user, profile_picture=None, score=0):
+def add_userProfile(user, profile_picture="static/populateMedia/profile_images/blankProfile.png", score=0):
+    image_file = open(profile_picture, "rb")
+
     userProfile = UserProfile.objects.get_or_create(user=user, 
-                                                    profile_picture=profile_picture,
                                                     score=score)[0]
+    userProfile.profile_picture.save(os.path.basename(profile_picture), File(image_file))
+
+    image_file.close()
     userProfile.save()
     return userProfile
 

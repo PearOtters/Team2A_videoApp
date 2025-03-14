@@ -88,4 +88,62 @@ Click on branches and then select create new branch and follow instructions. Onc
 
 Once you have done this you can now commit your code to your branch in the usual way with git add * etc.
 
+
+## Keeping your branch up to date with main by pulling main into your branch
+
 WHEN MERGING ALWAYS ENSURE IT IS TO 'ORIGIN MAIN' NOT JUST 'MAIN'
+
+Firstly make sure you are on your branch
+
+```bash
+git checkout <branch-name>
+```
+
+Fetch changes from the remote respository
+
+```bash
+git fetch origin
+```
+
+Merge main into your branch
+```bash
+git merge origin/main
+```
+
+If there are conflicts it will say in the terminal, after resolving these through vscode's built in
+merge conflict resolver or through your preferred method
+```bash
+git add *
+git commit -m "your message"
+```
+
+## Merging with main
+
+Ensure your branch is up to date with main
+```bash
+git checkout <your-branch>
+git fetch origin
+git merge origin/main
+```
+
+Switch to main
+```bash
+git checkout main
+```
+
+Merge your branch into main
+```bash
+git merge <your-branch>
+```
+
+If there are conflicts it will say in the terminal, after resolving these through vscode's built in
+merge conflict resolver or through your preferred method
+```bash
+git add *
+git commit -m "your message"
+```
+
+Push the updated main branch to the remote repository
+```bash
+git push origin main
+```
