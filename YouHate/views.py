@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import DatabaseError
+from django.contrib.auth.forms import UserCreationForm
 
 def index(request):
     context_dict = {}
@@ -74,10 +75,18 @@ def base(request, url, context_dic):
     return render(request, url, context=context_dic)
 
 def user_login(request):
-    return HttpResponse("Under construction...")
+    return redirect("register")
 
-def register(request):
-    return HttpResponse("Under construction...")
+def user_register(request):
+    if request.method == "POST":
+        registerForm = UserCreationForm(request.POST)
+        if registerForm.is_valid():
+            registerForm.save()
+            return redirect("index")
+    else:
+        registerForm = UserCreationForm()
+    context_dic = {"form": registerForm}
+    return render(request, "YouHate/register.html", context=context_dic)
 
 @login_required
 def user_logout(request):
