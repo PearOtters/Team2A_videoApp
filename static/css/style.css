@@ -56,3 +56,13 @@ footer {
   padding: 10px;
   text-align: center;
 }
+
+.individualVideoAndThumbnail {
+  display: flex;
+  flex-direction: column;
+  background-color: aqua;
+  width: 30%; 
+  max-width: 100%;
+  height: auto;
+  flex-shrink: 0; 
+}

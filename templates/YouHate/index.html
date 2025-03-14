@@ -10,7 +10,10 @@
     <h2>All Recent</h2>
     <div class="videoBlock">
         {% for v in recentVideos %}
-            <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+            <div class="individualVideoAndThumbnail">
+                <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                <h3>{{ v.title }}</h3>
+            </div>
         {% endfor %}
     </div>
 
@@ -30,6 +33,7 @@
             {% for v in videos %}
             {% if v.category.name == category %}
                 <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                <h3>{{ v.title }}</h3>
             {% endif %}
             {% endfor %}
         </div>

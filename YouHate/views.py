@@ -69,6 +69,10 @@ def user_logout(request):
     return redirect(reverse('index'))
 
 @login_required
+def user_profile(request):
+    return HttpResponse("Under construction")
+
+@login_required
 def upload(request, category_slug):
     return HttpResponse("Under construction...")
 

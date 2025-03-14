@@ -27,6 +27,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('register/', views.register, name='register'),
     path('add_category/', views.add_category, name='add_category'),
+    path('profile/', views.user_profile, name="profile"),
     path('<slug:category_slug>/', views.category_detail, name='category_detail'),
     path('<slug:category_slug>/upload/', views.upload, name='upload'),
     path('<slug:category_slug>/<slug:video_slug>/', views.video_detail, name='video_detail'),
