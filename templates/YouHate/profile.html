@@ -19,7 +19,7 @@
             <h2>Videos</h2>
             <div class="videoBlock">
                 {% for video in videos %}
-                    <div class="videoThumbnail"> <!-- Reuse the 'videoThumbnail' class from index page -->
+                    <div class="videoThumbnail"> 
                         <a href="{% url 'video_detail' video.category.slug video.slug %}">
                             <img src="{{ video.thumbnail.url }}" alt="Video Thumbnail" />
                         </a>

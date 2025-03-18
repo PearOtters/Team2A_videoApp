@@ -27,7 +27,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('register/', views.user_register, name='register'),
     path('add_category/', views.add_category, name='add_category'),
-    #path('profile/', views.user_profile, name="profile"),
     path('profile/<str:username>/', views.user_profile, name="user_profile"),
     path('<slug:category_slug>/', views.category_detail, name='category_detail'),
     path('<slug:category_slug>/upload/', views.upload, name='upload'),
