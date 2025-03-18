@@ -51,9 +51,19 @@
             <h2>Categories</h2>
             <select name="allCategories" id="allCategoriesDropDown">
                 {% for category in baseCategoryNames %}
-                    <option value="{{ category }}">{{ category }}</option>
+                    <option value="/{{ category }}">{{ category }}</option>
                 {% endfor %}
             </select>
+            <script>
+                $(document).ready(function () {
+                    $('#allCategoriesDropDown').on('change', function() {
+                        const selectedUrl = $(this).val().toLowerCase();
+                        if (selectedUrl) {
+                            window.location.href = selectedUrl;
+                        }
+                    });
+                });
+            </script>
             <h3>Trending</h3>
             <ul>
                 {% for slug, name in baseTop5Categories %}
