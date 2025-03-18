@@ -28,22 +28,6 @@ def view_categories(request):
     context_dict['categories'] = Category.objects.order_by('-video_count')
     return render(request, 'YouHate/categories.html', context=context_dict)
 
-# def category_detail(request, category_slug):
-#     context_dict = {}
-#     try:
-#         category = Category.objects.get(slug=category_slug)
-#         videos = Video.objects.filter(category=category)
-#         context_dict['videos'] = videos
-#         context_dict['recentVideos'] = videos.order_by('created')
-#         context_dict['dislikedVideos'] = videos.order_by('-dislikes')
-#         context_dict['mostViewedVideos'] = videos.order_by('-views')
-#         context_dict['leastViewedVideos'] = videos.order_by('views')
-#         context_dict['category'] = category
-#     except Category.DoesNotExist:
-#         context_dict['category'] = None
-#         context_dict['videos'] = None
-#     return base(request, 'YouHate/category_detail.html', context_dict)
-
 def category_detail(request, category_slug):
     context_dict = {}
     try:
@@ -56,55 +40,28 @@ def category_detail(request, category_slug):
         context_dict['leastViewedVideos'] = videos.order_by('views')
         context_dict['category'] = category
     except Category.DoesNotExist:
-        # Optionally, log this error or handle it more gracefully
         context_dict['category'] = None
         context_dict['videos'] = None
-        context_dict['error_message'] = "Category not found."
     return base(request, 'YouHate/category_detail.html', context_dict)
-
-
-# def video_detail(request, category_slug, video_slug):
-#     context_dict = {}
-#     try:
-#         category = Category.objects.get(slug=category_slug)
-#         videos = Video.objects.filter(category=category)
-#         thisVideo = videos.filter(slug=video_slug)[0]
-#         suggested = videos.order_by('-dislikes')
-
-#         context_dict['comments'] = Comment.objects.filter(video=thisVideo)
-#         context_dict['replies'] = Reply.objects.all()
-#         context_dict['thisVideo'] = thisVideo
-#         context_dict['suggestedVideo'] = suggested[0] # if not (suggested[0] in suggested.filter(slug=video_slug)) else suggested[1]
-
-#     except Video.DoesNotExist:
-#         context_dict['comments'] = None
-#         context_dict['replies'] = None
-#         context_dict['thisVideo'] = None
-#         context_dict['suggestedVideo'] = None
-#     return base(request, "YouHate/video_detail.html", context_dict)
 
 def video_detail(request, category_slug, video_slug):
     context_dict = {}
     try:
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
-        thisVideo = videos.filter(slug=video_slug).first()  # Changed to 'first' to avoid IndexError
-        if not thisVideo:
-            raise Video.DoesNotExist("Video not found.")
-        
+        thisVideo = videos.filter(slug=video_slug)[0]
         suggested = videos.order_by('-dislikes')
-        
+
         context_dict['comments'] = Comment.objects.filter(video=thisVideo)
         context_dict['replies'] = Reply.objects.all()
         context_dict['thisVideo'] = thisVideo
-        context_dict['suggestedVideo'] = suggested[0] if suggested else None
-    except (Category.DoesNotExist, Video.DoesNotExist) as e:
-        context_dict['error_message'] = str(e)
+        context_dict['suggestedVideo'] = suggested[0] # if not (suggested[0] in suggested.filter(slug=video_slug)) else suggested[1]
+
+    except Video.DoesNotExist:
         context_dict['comments'] = None
         context_dict['replies'] = None
         context_dict['thisVideo'] = None
         context_dict['suggestedVideo'] = None
-
     return base(request, "YouHate/video_detail.html", context_dict)
 
 def base(request, url, context_dic):
@@ -148,7 +105,6 @@ def user_profile(request, username):
     context_dict['baseTop5Categories'] = top5
 
     return render(request, 'YouHate/profile.html', context_dict)
-
 
 @login_required
 def upload(request, category_slug):
