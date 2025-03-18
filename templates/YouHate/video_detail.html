@@ -42,8 +42,10 @@
         </div>
         <div id="videoInformation">
             <div id="user">
-                <h2>{{ thisVideo.user.user.username }}</h2>
-                <img id="profilePicture" src="{{ thisVideo.user.profile_picture.url }}" alt="Profile">
+                <a href="{% url 'user_profile' thisVideo.user.user.username %}">
+                    <h2>{{ thisVideo.user.user.username }}</h2>
+                    <img id="profilePicture" src="{{ thisVideo.user.profile_picture.url }}" alt="Profile">
+                </a>
             </div>
             <div id="description">
                 <h2>{{ thisVideo.title }}</h2>

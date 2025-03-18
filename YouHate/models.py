@@ -7,6 +7,7 @@ import secrets, string
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True)
+    bio = models.TextField(default="This user has no bio.")
     score = models.PositiveIntegerField(default=0)
     
     def __str__(self):

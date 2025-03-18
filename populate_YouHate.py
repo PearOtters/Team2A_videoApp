@@ -18,7 +18,7 @@ def populate():
     user3 = add_user("user3", "user3@gmail.com", 1234)
     user4 = add_user("user4", "user4@gmail.com", 1234)
 
-    userProfile1 = add_userProfile(user1, score=5)
+    userProfile1 = add_userProfile(user1, score=5, bio="I am Larry")
     userProfile2 = add_userProfile(user2, score=10)
     userProfile3 = add_userProfile(user3, score=15)
     userProfile4 = add_userProfile(user4, score=20)
@@ -48,7 +48,6 @@ def populate():
         {'name': 'Business', 'video_count': 0},
         {'name': 'Tech', 'video_count': 0},
         {'name': 'Entertainment', 'video_count': 0},
-        {'name': 'Gaming', 'video_count': 0},
         {'name': 'Science', 'video_count': 0},
         {'name': 'Art', 'video_count': 0},
         {'name': 'Culture', 'video_count': 0},
@@ -117,8 +116,7 @@ def populate():
                   likes=reply['likes'], dislikes=reply['dislikes'])
 
 def add_category(name, video_count=0):
-    category = Category.objects.get_or_create(name=name, video_count=video_count)[0]
-    category.save()
+    category, created = Category.objects.get_or_create(name=name, defaults={'video_count': video_count})
     return category
 
 def add_video(category, user, title, video_path, thumbnail_path, description="No description", created=timezone.now(), views=0, likes=0, dislikes=0):
@@ -138,11 +136,12 @@ def add_video(category, user, title, video_path, thumbnail_path, description="No
     video.save()
     return video
 
-def add_userProfile(user, profile_picture="static/populateMedia/profile_images/blankProfile.png", score=0):
+def add_userProfile(user, profile_picture="static/populateMedia/profile_images/blankProfile.png", score=0, bio=""):
     image_file = open(profile_picture, "rb")
 
     userProfile = UserProfile.objects.get_or_create(user=user, 
-                                                    score=score)[0]
+                                                    score=score,
+                                                    bio=bio)[0]
     userProfile.profile_picture.save(os.path.basename(profile_picture), File(image_file))
 
     image_file.close()
@@ -150,8 +149,10 @@ def add_userProfile(user, profile_picture="static/populateMedia/profile_images/b
     return userProfile
 
 def add_user(username, email, password):
-    user = User.objects.get_or_create(username=username, email=email, password=password)[0]
-    user.save()
+    user, created = User.objects.get_or_create(username=username, email=email)
+    if created:
+        user.set_password(password) 
+        user.save()
     return user
 
 def add_comment(video, user, body, created=timezone.now(), likes=0, dislikes=0):
