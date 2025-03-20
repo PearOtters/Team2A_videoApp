@@ -13,28 +13,64 @@
                 <h2>All Recent</h2>
                 <div class="videoBlock">
                     {% for v in recentVideos %}
-                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    <div class="videoThumbnail">
+                        <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+                        <h3>{{ v.title }}</h3>
+                        <div class="videoInfo">
+                            <p class="creator">{{ v.user.user.username }}</p>
+                            <p class="published">{{ v.created|date:"d.m.Y" }}</p>
+                            <p class="dislikes">Dislikes: {{ v.dislikes }}</p>
+                            <p class="views">Views: {{ v.views }}</p>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
 
                 <h2>Most Disliked</h2>
                 <div class="videoBlock">
                     {% for v in dislikedVideos %}
-                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    <div class="videoThumbnail">
+                        <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+                        <h3>{{ v.title }}</h3>
+                        <div class="videoInfo">
+                            <p class="creator">{{ v.user.user.username }}</p>
+                            <p class="published">{{ v.created|date:"d.m.Y" }}</p>
+                            <p class="dislikes">Dislikes: {{ v.dislikes }}</p>
+                            <p class="views">Views: {{ v.views }}</p>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
 
                 <h2>Most Viewed</h2>
                 <div class="videoBlock">
                     {% for v in mostViewedVideos %}
-                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    <div class="videoThumbnail">
+                        <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+                        <h3>{{ v.title }}</h3>
+                        <div class="videoInfo">
+                            <p class="creator">{{ v.user.user.username }}</p>
+                            <p class="published">{{ v.created|date:"d.m.Y" }}</p>
+                            <p class="dislikes">Dislikes: {{ v.dislikes }}</p>
+                            <p class="views">Views: {{ v.views }}</p>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
 
                 <h2>Least Viewed</h2>
                 <div class="videoBlock">
                     {% for v in leastViewedVideos %}
-                        <img class="videoThumbnail" src="{{ v.thumbnail.url }}" alt=""></img>
+                    <div class="videoThumbnail">
+                        <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
+                        <h3>{{ v.title }}</h3>
+                        <div class="videoInfo">
+                            <p class="creator">{{ v.user.user.username }}</p>
+                            <p class="published">{{ v.created|date:"d.m.Y" }}</p>
+                            <p class="dislikes">Dislikes: {{ v.dislikes }}</p>
+                            <p class="views">Views: {{ v.views }}</p>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
             {% else %}
