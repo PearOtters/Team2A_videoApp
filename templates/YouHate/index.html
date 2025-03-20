@@ -13,6 +13,12 @@
         <div class="videoThumbnail">
             <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
             <h3>{{ v.title }}</h3>
+            <div class="videoInfo">
+                <p class="creator">{{ v.user.user.username }}</p>
+                <p class="published">{{ v.created|date:"d.m.Y" }}</p>
+                <p class="dislikes">Dislikes: {{ v.dislikes }}</p>
+                <p class="views">Views: {{ v.views }}</p>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -35,6 +41,12 @@
             <div class="videoThumbnail">
                 <a href="{% url 'video_detail' v.category.slug v.slug %}"><img src="{{ v.thumbnail.url }}" alt="" style="width:100%"></img></a>
                 <h3>{{ v.title }}</h3>
+                <div class="videoInfo">
+                    <p class="creator">{{ v.user.user.username }}</p>
+                    <p class="published">{{ v.created|date:"d.m.Y" }}</p>
+                    <p class="dislikes">Dislikes: {{ v.dislikes }}</p>
+                    <p class="views">Views: {{ v.views }}</p>
+                </div>
             </div>
             {% endif %}
             {% endfor %}
@@ -50,7 +62,7 @@
                 let scrollAmount = event.originalEvent.deltaY || event.originalEvent.deltaX; 
                 $(this).stop().animate({
                     scrollLeft: "+=" + scrollAmount
-                }, 200); // Adjust speed (200ms) for smooth scrolling
+                }, 200); // Smooth Scrolling
             });
         });
     </script>             
