@@ -8,10 +8,10 @@ from django.core.files import File
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+default_picture = "static/populateMedia/profile_images/blankProfile.png"
+default_profile_picture_path = None
+
 def populate():
-    ###
-    ### TODO: Add more videos, users, comments, and replies ###
-    ###
 
     user1 = add_user("user1", "user1@gmail.com", 1234)
     user2 = add_user("user2", "user2@gmail.com", 1234)
@@ -136,15 +136,28 @@ def add_video(category, user, title, video_path, thumbnail_path, description="No
     video.save()
     return video
 
-def add_userProfile(user, profile_picture="static/populateMedia/profile_images/blankProfile.png", score=0, bio=""):
+def add_userProfile(user, profile_picture=default_picture, score=0, bio=""):
+    global default_profile_picture_path
+
     image_file = open(profile_picture, "rb")
 
     userProfile = UserProfile.objects.get_or_create(user=user, 
-                                                    score=score,
-                                                    bio=bio)[0]
-    userProfile.profile_picture.save(os.path.basename(profile_picture), File(image_file))
-
-    image_file.close()
+                                                    score=score, bio=bio)[0]
+    if profile_picture == default_picture:
+        if default_profile_picture_path is None:
+            image_file = open(profile_picture, "rb")
+            file_name = os.path.basename(profile_picture)
+            userProfile.profile_picture.save(file_name, File(image_file))
+            image_file.close()
+            default_profile_picture_path = userProfile.profile_picture.name
+        else:
+            userProfile.profile_picture.name = default_profile_picture_path
+            userProfile.save(update_fields=['profile_picture'])
+    else:
+        image_file = open(profile_picture, "rb")
+        userProfile.profile_picture.save(os.path.basename(profile_picture), File(image_file))
+        image_file.close()
+    
     userProfile.save()
     return userProfile
 
