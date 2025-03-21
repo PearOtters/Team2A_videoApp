@@ -79,18 +79,5 @@
         </div>
     {% else %}
         <p>No category found.</p>
-    {% endif %}
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#videoBlock").on("wheel", function (event) {
-                event.preventDefault();
-                
-                let scrollAmount = event.originalEvent.deltaY || event.originalEvent.deltaX; 
-                $(this).stop().animate({
-                    scrollLeft: "+=" + scrollAmount
-                }, 200); // Adjust speed (200ms) for smooth scrolling
-            });
-        });
-    </script>             
+    {% endif %}             
 {% endblock %}
