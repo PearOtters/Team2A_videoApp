@@ -166,3 +166,11 @@ footer {
   margin-top: 10px;
   margin-bottom: 15px;
 }
+
+.about-rectangle {
+  display: flex;
+  width: 95%;
+  padding: 20px; 
+  border: 1px solid black;
+  margin-bottom: 20px; 
+}
