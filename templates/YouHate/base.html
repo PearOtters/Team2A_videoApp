@@ -33,7 +33,7 @@
                             <input type="submit" id="goBtn" value="Go">
                         </div>
                     </form>
-                    <button type="button" id="randomiseBtn" onclick="window.location.href='{% url 'random_video' %}'">Randomise</button>
+                    <button type="button" id="randomiseBtn" onclick="randomVideo()">Randomise</button>
                 </search>
             </div>
             <div id="aboutUserActionButtons">
@@ -64,6 +64,9 @@
                         }
                     });
                 });
+                function randomVideo() {
+                    window.location.href = "{% url 'random_video' %}";
+                }
             </script>
             <h3>Trending</h3>
             <ul>
