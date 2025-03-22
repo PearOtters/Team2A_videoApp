@@ -174,3 +174,7 @@ footer {
   border: 1px solid black;
   margin-bottom: 20px; 
 }
+
+.about-text {
+  font-size: 2rem;
+}
