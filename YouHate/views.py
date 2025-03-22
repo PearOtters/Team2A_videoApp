@@ -20,7 +20,7 @@ def index(request):
     return base(request, 'YouHate/index.html', context_dict)
 
 def about(request):
-    return render(request, 'YouHate/about.html')
+    return base(request, 'YouHate/about.html', {})
 
 def category_detail(request, category_slug):
     context_dict = {}
@@ -103,7 +103,7 @@ def user_register(request):
     else:
         registerForm = CustomUserCreationForm()
     context_dic = {"form": registerForm}
-    return render(request, "YouHate/register.html", context=context_dic)
+    return base(request, "YouHate/register.html", context_dic)
 
 @login_required
 def user_logout(request):
@@ -121,7 +121,7 @@ def user_profile(request, username):
     context_dict['baseCategoryNames'] = categories
     context_dict['baseTop5Categories'] = top5
 
-    return render(request, 'YouHate/profile.html', context_dict)
+    return base(request, 'YouHate/profile.html', context_dict)
 
 @login_required
 def upload(request, category_slug):

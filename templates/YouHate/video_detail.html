@@ -16,29 +16,53 @@
         </div>
         <div id="suggested">
             <h2>We Suggest</h2>
-            {% if suggestedVideo %}
-                <div class="videoBlock">
-                    <a href="{% url 'video_detail' suggestedVideo.category.slug suggestedVideo.slug %}"><img class="videoThumbnail" style="width:50%" src="{{ suggestedVideo.thumbnail.url }}" alt=""></img></a>
+            {% if suggestedVideo != thisVideo %}
+                <div class="suggestedBlock">
+                    <div class="suggestedThumbnail" style="max-height:20vh">
+                        <a href="{% url 'video_detail' suggestedVideo.category.slug suggestedVideo.slug %}"><img src="{{ suggestedVideo.thumbnail.url }}" alt=""></img></a>
+                    </div>
+                    <div class="commentInfo">
+                        <p class="creator">{{ suggestedVideo.user.user.username }}</p>
+                        <p class="published">{{ suggestedVideo.created|date:"d.m.Y" }}</p>
+                        <p class="dislikes">Dislikes: {{ suggestedVideo.dislikes }}</p>
+                        <p class="views">Views: {{ suggestedVideo.views }}</p>
+                    </div>
+                    <h3>{{ suggestedVideo.title }}</h3>
                 </div>        
+            {% else %}
+                <div class="videoBlock">
+                    <p>There are no videos worse than this one</p>
+                </div>
             {% endif %}
         </div>
         <div></div>
         <div id="comments">
             <h2>Comments</h2>
+            <div id="commentsScroll">
             {% if comments %}
                 {% for c in comments %}
                     <div class="comment">
-                        <p>{{ c.body }}</p>
+                        <div class="commentUser"><a href="{% url 'user_profile' c.user.user.username %}">
+                        <p>
+                            {{ c.user.user.username }}<br>
+                            <img src="{{ c.user.profile_picture.url }}" alt="Profile Picture" style="width:70%; max-height:50%"></img>
+                        </p>
+                        </a></div>
+                        <div class="commentBody"><p>{{ c.body }}</p></div>
                     </div>
                     {% for r in replies %}
                         {% if r.comment == c %}
                             <div class="reply">
-                                <p>{{ r.body }}</p>
+                                <div class="replyUser"><a href="{% url 'user_profile' r.user.user.username %}"><p>{{ r.user.user.username }}</p></a></div>
+                                <div class="replyBody"><p>{{ r.body }}</p></div>
                             </div>
                         {% endif %}
-                    {% endfor %}
+                    {% endfor %}<br>
                 {% endfor %}
+            {% else %}
+            <p>No comments yet</p>
             {% endif %}
+            </div>
         </div>
         <div id="videoInformation">
             <div id="user">

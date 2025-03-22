@@ -55,6 +55,38 @@ main {
   flex-shrink: 0;
 }
 
+.suggestedBlock {
+  display: flex;
+  flex-direction: column;
+  background-color: darkgray;
+  width: 90%; 
+  max-width: 100%;
+  max-height: 30vh;
+  height: auto;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-areas:
+      "suggestedThumbnail videoInfo"
+      "h3 h3";
+  grid-template-columns: 50%, 50%;
+  grid-template-rows: 50%, 50%;
+}
+
+.suggestedThumbnail {
+  max-height:15vh;
+  max-width:90%;
+  background-color:black;
+}
+
+.suggestedThumbnail img {
+  height:100%;
+  width:100%;
+}
+
+.commentInfo {
+  max-width: 50%;
+}
+
 .videoInfo {
   display: grid;
   grid-template-areas:
@@ -71,7 +103,8 @@ main {
       "videoContainer comments"
       "videoInformation comments";
   grid-template-columns: 70% 30%;
-  grid-template-rows: 45vh 25vh auto;
+  grid-template-rows: 35vh 35vh auto;
+  height: auto;
 }
 
 #videoContainer {
@@ -93,6 +126,63 @@ main {
   grid-template-areas:
     "user, description";
   grid-template-columns: 20% auto;
+}
+
+#commentsScroll {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;  /* Firefox scrollbar */
+  scrollbar-color: #888 #f1f1f1;
+  height: 55vh;
+  margin-right: 5%;
+}
+
+/* WebKit-based browsers (Chrome, Safari, Edge) */
+#commentsScroll::-webkit-scrollbar {
+  width: 8px; /* Make scrollbar visible */
+}
+
+#commentsScroll::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light grey background */
+  border-radius: 10px;
+}
+
+#commentsScroll::-webkit-scrollbar-thumb {
+  background: #888; /* Darker grey for the scroll */
+  border-radius: 10px;
+}
+
+#commentsScroll::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker colour on hover */
+}
+
+.comment {
+  border: 1px solid #333;
+  background-color: #f5f5f5;
+  display: grid;
+  grid-template-areas:
+    "commentUser, commentBody";
+  grid-template-columns: 20% auto;
+}
+
+.commentUser {
+  text-align: center;
+}
+
+.reply {
+  border-left: 1px solid #333;
+  border-top: 1px solid #f5f5f5;
+  border-right: 1px solid #333;
+  border-bottom: 1px solid #333;
+  background-color: #f5f5f5;
+  display: grid;
+  grid-template-areas:
+    "replyUser, replyBody";
+  grid-template-columns: 20% auto;
+}
+
+.replyUser {
+  text-align: center;
 }
 
 #profilePicture {
