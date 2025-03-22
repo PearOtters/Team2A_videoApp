@@ -20,7 +20,7 @@ def index(request):
     return base(request, 'YouHate/index.html', context_dict)
 
 def about(request):
-    return HttpResponse("Under construction...")
+    return render(request, 'YouHate/about.html')
 
 def category_detail(request, category_slug):
     context_dict = {}
