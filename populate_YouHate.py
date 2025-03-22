@@ -81,7 +81,7 @@ def populate():
     )
 
     video2 = add_video(
-        category = categorie_models[31],
+        category = categorie_models[0],
         user=userProfile1,
         title="Me At The Zoo",
         video_path="static/populateMedia/videos/MeAtTheZoo.mp4",

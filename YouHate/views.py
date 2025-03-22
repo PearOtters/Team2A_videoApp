@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
 from YouHate.models import Video, Category, Comment, UserProfile, Reply
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -10,7 +10,7 @@ from .forms import CustomUserCreationForm
 def index(request):
     context_dict = {}
     try:
-        context_dict['categories'] = Category.objects.values_list('name', flat=True).order_by('-video_count')[:5]
+        context_dict['categories'] = Category.objects.order_by('-video_count')[:5]
         context_dict['videos'] = Video.objects.all()
         context_dict['recentVideos'] = Video.objects.order_by('created')[:10]
     except Category.DoesNotExist:
@@ -73,6 +73,29 @@ def base(request, url, context_dic):
     except Category.DoesNotExist:
         context_dic['baseCategoryNames'] = None
     return render(request, url, context=context_dic)
+
+def sort_videos(request):
+    category_slug = request.GET.get("category")
+    sort_by = request.GET.get("sort", "-created")
+
+    if not category_slug:
+        return JsonResponse({"error": "No category provided"}, status=400)
+
+    category = get_object_or_404(Category, slug=category_slug)
+    videos = Video.objects.filter(category=category).order_by(sort_by)
+
+    video_list = [{
+            "title": v.title,
+            "thumbnail": v.thumbnail.url,
+            "category_slug": v.category.slug,
+            "slug": v.slug,
+            "username": v.user.user.username,
+            "created": v.created.strftime("%d.%m.%Y"),
+            "dislikes": v.dislikes,
+            "views": v.views,
+        } for v in videos]
+    
+    return JsonResponse({"videos": video_list})
 
 def user_login(request):
     return redirect("register")
