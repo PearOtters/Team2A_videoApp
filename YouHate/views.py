@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import DatabaseError
 from .forms import CustomUserCreationForm
+import random
 
 def index(request):
     context_dict = {}
@@ -126,3 +127,16 @@ def user_profile(request, username):
 @login_required
 def upload(request, category_slug):
     return HttpResponse("Under construction...")
+
+def random_video(request):
+    try:
+        videos = Video.objects.all()
+        if videos.exists():
+            random_video = random.choice(videos)
+            return redirect('video_detail', 
+                           category_slug=random_video.category.slug,
+                           video_slug=random_video.slug)
+        else:
+            return redirect('index')
+    except Exception:
+        return redirect('index')
