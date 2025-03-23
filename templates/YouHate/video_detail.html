@@ -70,7 +70,105 @@
                 <p class="video-published">Published: {{ thisVideo.created|date:"d.m.Y" }}</p>
                 <p class="video-dislikes">Dislikes: {{ thisVideo.dislikes }}</p>
                 <p class="video-dislikes-to-like-ratio"> Dislikes to likes ratio: {{ ratio|floatformat:2 }}%</p>
-            </div> <br>
+            </div>
+            <br>
+            <div class="like-dislike-button">
+                <button id="likeButton" onclick="likeVideo()">Like</button>
+                <button id="dislikeButton" onclick="dislikeVideo()">Dislike</button>
+            </div>
+            <script>
+                function getCsrfToken() {
+                    const cookieValue = document.cookie
+                        .split('; ')
+                        .find(row => row.startsWith('csrftoken='))
+                        ?.split('=')[1];
+                    return cookieValue;
+                }
+            
+                function likeVideo() {
+                    fetch('{% url "like_video" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCsrfToken(),
+                        },
+                        body: JSON.stringify({
+                            video_id: {{ thisVideo.id }}
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
+                            if (ratioElement) {
+                                ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
+                            }
+                            
+                            const likeButton = document.getElementById('likeButton');
+                            if (likeButton) {
+                                likeButton.classList.add('liked');
+                                likeButton.disabled = true;
+                            }
+                            
+                            alert('Video liked successfully!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error liking video:', error);
+                        alert('Failed to like video. Please try again.');
+                    });
+                }
+            
+                function dislikeVideo() {
+                    fetch('{% url "dislike_video" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCsrfToken(),
+                        },
+                        body: JSON.stringify({
+                            video_id: {{ thisVideo.id }}
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            const dislikesElement = document.querySelector('.video-dislikes');
+                            if (dislikesElement) {
+                                dislikesElement.textContent = `Dislikes: ${data.dislikes}`;
+                            }
+                            
+                            const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
+                            if (ratioElement) {
+                                ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
+                            }
+                            
+                            const dislikeButton = document.getElementById('dislikeButton');
+                            if (dislikeButton) {
+                                dislikeButton.classList.add('disliked');
+                                dislikeButton.disabled = true;
+                            }
+                            
+                            alert('Video disliked successfully!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error disliking video:', error);
+                        alert('Failed to dislike video. Please try again.');
+                    });
+                }
+            </script>
+            <br>
             <div id="user">
                 <a href="{% url 'user_profile' thisVideo.user.user.username %}">
                     <h2>{{ thisVideo.user.user.username }}</h2>

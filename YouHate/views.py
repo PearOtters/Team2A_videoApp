@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import DatabaseError
 from .forms import CustomUserCreationForm
-import random
+import random, json
 
 def index(request):
     context_dict = {}
@@ -148,3 +148,40 @@ def random_video(request):
             return redirect('index')
     except Exception:
         return redirect('index')
+    
+@login_required
+def like_video(request):
+    return likeDislikeHelper(request, 1)
+
+@login_required
+def dislike_video(request):
+    return likeDislikeHelper(request, -1)
+
+def likeDislikeHelper(request, add):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        video_id = data.get('video_id')
+        
+        try:
+            video = Video.objects.get(id=video_id)
+            if (add < 0):
+                video.dislikes += 1
+            elif (add > 0):
+                video.likes += 1
+
+            video.save()
+            ratio = 0
+            if video.likes > 0:
+                ratio = (video.dislikes / video.likes) * 100
+            
+            return JsonResponse({
+                'success': True,
+                'dislikes': video.dislikes,
+                'ratio': ratio
+            })
+        except Video.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Video not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
