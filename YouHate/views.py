@@ -61,7 +61,7 @@ def video_detail(request, category_slug, video_slug):
 
 def base(request, url, context_dic):
     try:
-        categories = Category.objects.values_list('name', flat=True)
+        categories = Category.objects.values_list('slug', 'name').order_by('name')
         top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
         context_dic['baseCategoryNames'] = categories
         context_dic['baseTop5Categories'] = top5

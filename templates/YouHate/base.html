@@ -51,8 +51,8 @@
             <a href="{% url 'index' %}" id="logoAnchor"><img src="{% static 'logo/placeholderLogo.png' %}" alt="Logo" id="logo"></a>
             <h2>Categories</h2>
             <select name="allCategories" id="allCategoriesDropDown">
-                {% for category in baseCategoryNames %}
-                    <option value="/{{ category }}">{{ category }}</option>
+                {% for slug, name in baseCategoryNames %}
+                    <option value="/{{ slug }}">{{ name }}</option>
                 {% endfor %}
             </select>
             <script>
