@@ -45,8 +45,16 @@ def video_detail(request, category_slug, video_slug):
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
         thisVideo = videos.filter(slug=video_slug)[0]
-        suggested = videos.order_by('-dislikes')
 
+        thisVideo.views += 1
+        thisVideo.save()
+
+        suggested = videos.order_by('-dislikes')
+        ratio = 0
+        if thisVideo.likes > 0:
+            ratio = (thisVideo.dislikes / thisVideo.likes) * 100
+
+        context_dict['ratio'] = ratio
         context_dict['comments'] = Comment.objects.filter(video=thisVideo)
         context_dict['replies'] = Reply.objects.all()
         context_dict['thisVideo'] = thisVideo
