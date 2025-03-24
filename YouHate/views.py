@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from YouHate.models import Video, Category, Comment, UserProfile, Reply
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import DatabaseError
@@ -225,3 +226,60 @@ def likeDislikeHelper(request, add):
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
     
     return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+
+@login_required
+def add_comment(request, video_id):
+    if request.method == 'POST':
+        try:
+            video = Video.objects.get(id=video_id)
+            user_profile = UserProfile.objects.get(user=request.user)
+            body = request.POST.get('body', '').strip()
+            
+            if body:
+                comment = Comment(video=video, user=user_profile, body=body)
+                comment.save()
+                messages.success(request, 'Comment added successfully!')
+            else:
+                messages.error(request, 'Comment cannot be empty.')
+            
+            return redirect('video_detail', 
+                            category_slug=video.category.slug, 
+                            video_slug=video.slug)
+        
+        except Video.DoesNotExist:
+            messages.error(request, 'Video not found.')
+            return redirect('index')
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+            return redirect('index')
+    
+    return redirect('index')
+
+@login_required
+def add_reply(request, comment_id, video_id):
+    if request.method == 'POST':
+        try:
+            video = Video.objects.get(id=video_id)
+            comment = Comment.objects.get(id=comment_id)
+            user_profile = UserProfile.objects.get(user=request.user)
+            body = request.POST.get('body', '').strip()
+            
+            if body:
+                reply = Reply(user=user_profile, body=body, comment=comment)
+                reply.save()
+                messages.success(request, 'Reply added successfully!')
+            else:
+                messages.error(request, 'Reply cannot be empty.')
+            
+            return redirect('video_detail', 
+                            category_slug=video.category.slug, 
+                            video_slug=video.slug)
+        
+        except Video.DoesNotExist:
+            messages.error(request, 'Video not found.')
+            return redirect('index')
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+            return redirect('index')
+    
+    return redirect('index')
