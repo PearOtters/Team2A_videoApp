@@ -73,8 +73,18 @@
             </div>
             <br>
             <div class="like-dislike-button">
-                <button id="likeButton" onclick="likeVideo()">Like</button>
-                <button id="dislikeButton" onclick="dislikeVideo()">Dislike</button>
+                {% if user.is_authenticated %}
+                    {% if liked %}
+                        <button id="like-button" class="red" onclick="likeVideo()">Like</button>
+                    {% else %}
+                        <button id="like-button" onclick="likeVideo()">Like</button>
+                    {% endif %}
+                    {% if disliked %}
+                        <button id="dislike-button" class="red" onclick="dislikeVideo()">Dislike</button>
+                    {% else %}
+                        <button id="dislike-button" onclick="dislikeVideo()">Dislike</button>
+                    {% endif %}
+                {% endif %}
             </div>
             <script>
                 function getCsrfToken() {
@@ -93,6 +103,7 @@
                             'X-CSRFToken': getCsrfToken(),
                         },
                         body: JSON.stringify({
+                            user_id: {{ user.id }},
                             video_id: {{ thisVideo.id }}
                         })
                     })
@@ -104,27 +115,37 @@
                     })
                     .then(data => {
                         if (data.success) {
+                            const dislikesElement = document.querySelector('.video-dislikes');
+                            if (dislikesElement) {
+                                dislikesElement.textContent = `Dislikes: ${data.dislikes}`;
+                            }
+
                             const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
                             if (ratioElement) {
                                 ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
                             }
                             
-                            const likeButton = document.getElementById('likeButton');
+                            const likeButton = document.getElementById('like-button');
                             if (likeButton) {
-                                likeButton.classList.add('liked');
-                                likeButton.disabled = true;
+                                likeButton.classList.toggle('red');
                             }
-                            
-                            alert('Video liked successfully!');
+
+                            if (data.hasLiked) {
+                                const dislikeButton = document.getElementById('dislike-button');
+                                if (dislikeButton) {
+                                    dislikeButton.classList.remove('red');
+                                }
+                            }
                         }
                     })
                     .catch(error => {
                         console.error('Error liking video:', error);
-                        alert('Failed to like video. Please try again.');
+                        alert('Unknown error. Try signing in');
                     });
                 }
             
                 function dislikeVideo() {
+                    const dislikeButton = document.getElementById('dislikeButton');
                     fetch('{% url "dislike_video" %}', {
                         method: 'POST',
                         headers: {
@@ -132,6 +153,7 @@
                             'X-CSRFToken': getCsrfToken(),
                         },
                         body: JSON.stringify({
+                            user_id: {{ user.id }},
                             video_id: {{ thisVideo.id }}
                         })
                     })
@@ -153,18 +175,21 @@
                                 ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
                             }
                             
-                            const dislikeButton = document.getElementById('dislikeButton');
+                            const dislikeButton = document.getElementById('dislike-button');
                             if (dislikeButton) {
-                                dislikeButton.classList.add('disliked');
-                                dislikeButton.disabled = true;
+                                dislikeButton.classList.toggle('red');
+                                if (data.hasDisliked) {
+                                    const likeButton = document.getElementById('like-button');
+                                    if (likeButton) {
+                                        likeButton.classList.remove('red');
+                                    }
+                                }
                             }
-                            
-                            alert('Video disliked successfully!');
                         }
                     })
                     .catch(error => {
                         console.error('Error disliking video:', error);
-                        alert('Failed to dislike video. Please try again.');
+                        alert('Not signed in. Please sign in to dislike videos.');
                     });
                 }
             </script>

@@ -45,6 +45,14 @@ def video_detail(request, category_slug, video_slug):
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
         thisVideo = videos.filter(slug=video_slug)[0]
+        currentUser = None
+        if request.user.is_authenticated:
+            currentUser = request.user
+            currentUserProfile = UserProfile.objects.get(user=currentUser)
+            if currentUserProfile in thisVideo.liked_by.all():
+                context_dict['liked'] = True
+            if currentUserProfile in thisVideo.disliked_by.all():
+                context_dict['disliked'] = True
 
         thisVideo.views += 1
         thisVideo.save()
@@ -53,7 +61,10 @@ def video_detail(request, category_slug, video_slug):
         ratio = 0
         if thisVideo.likes > 0:
             ratio = (thisVideo.dislikes / thisVideo.likes) * 100
+        elif thisVideo.dislikes > 0:
+            ratio = 100
 
+        context_dict['currentUser'] = currentUser
         context_dict['ratio'] = ratio
         context_dict['comments'] = Comment.objects.filter(video=thisVideo)
         context_dict['replies'] = Reply.objects.all()
@@ -161,22 +172,51 @@ def likeDislikeHelper(request, add):
     if request.method == 'POST':
         data = json.loads(request.body)
         video_id = data.get('video_id')
+        user_id = data.get('user_id')
         
         try:
+            hasLiked = False
+            hasDisliked = False
             video = Video.objects.get(id=video_id)
-            if (add < 0):
-                video.dislikes += 1
-            elif (add > 0):
-                video.likes += 1
-
+            user = UserProfile.objects.get(user_id=user_id)
+            if (user != None):
+                if (add < 0):
+                    if user in video.disliked_by.all():
+                        video.disliked_by.remove(user)
+                        video.dislikes -= 1
+                    else:
+                        video.disliked_by.add(user)
+                        video.dislikes += 1
+                        hasDisliked = True
+                        if user in video.liked_by.all():
+                            video.liked_by.remove(user)
+                            video.likes -= 1
+                elif (add > 0):
+                    if user in video.liked_by.all():
+                        video.liked_by.remove(user)
+                        video.likes -= 1
+                    else:
+                        video.liked_by.add(user)
+                        video.likes += 1
+                        hasLiked = True
+                        if user in video.disliked_by.all():
+                            video.disliked_by.remove(user)
+                            video.dislikes -= 1
+            else:
+                return JsonResponse({'success': False, 'error': 'User not logged in'}, status=404)
+            
             video.save()
             ratio = 0
             if video.likes > 0:
                 ratio = (video.dislikes / video.likes) * 100
+            elif video.dislikes > 0:
+                ratio = 100
             
             return JsonResponse({
                 'success': True,
                 'dislikes': video.dislikes,
+                'hasLiked': hasLiked,
+                'hasDisliked': hasDisliked,
                 'ratio': ratio
             })
         except Video.DoesNotExist:

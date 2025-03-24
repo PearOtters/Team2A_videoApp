@@ -283,3 +283,7 @@ footer {
 .about-text {
   font-size: 2rem;
 }
+
+.red {
+  background-color: red;
+}
