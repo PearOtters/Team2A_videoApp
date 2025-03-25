@@ -4,6 +4,7 @@ from YouHate.models import Video, Category, Comment, UserProfile, Reply
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.db import DatabaseError
 from .forms import CustomUserCreationForm
@@ -308,3 +309,23 @@ def search_videos(request):
         context_dict['error'] = str(e)
 
     return base(request, 'YouHate/search_results.html', context_dict)
+
+def sign_in_view(request):
+    login_form = AuthenticationForm()
+
+    if request.method == 'POST':
+        if 'login_submit' in request.POST:
+            login_form = AuthenticationForm(data=request.POST)
+            if login_form.is_valid():
+                username = login_form.cleaned_data['username']
+                print(username)
+                password = login_form.cleaned_data['password']
+                print(password)
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('index')
+                else:
+                    login_form.add_error(None, 'Invalid username or password')
+
+    return base(request, 'YouHate/sign_in.html', {'login_form': login_form})
