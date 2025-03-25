@@ -28,7 +28,7 @@ main {
 
 /* WebKit-based browsers (Chrome, Safari, Edge) */
 .videoBlock::-webkit-scrollbar {
-  height: 8px; /* Make scrollbar visible */
+  height: 8px; 
 }
 
 .videoBlock::-webkit-scrollbar-track {
@@ -155,21 +155,21 @@ main {
 
 /* WebKit-based browsers (Chrome, Safari, Edge) */
 #commentsScroll::-webkit-scrollbar {
-  width: 8px; /* Make scrollbar visible */
+  width: 8px; 
 }
 
 #commentsScroll::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Light grey background */
+  background: #f1f1f1; 
   border-radius: 10px;
 }
 
 #commentsScroll::-webkit-scrollbar-thumb {
-  background: #888; /* Darker grey for the scroll */
+  background: #888; 
   border-radius: 10px;
 }
 
 #commentsScroll::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Darker colour on hover */
+  background: #555; 
 }
 
 .comment {
