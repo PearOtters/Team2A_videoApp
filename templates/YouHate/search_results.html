@@ -13,7 +13,7 @@ Search Results
         {% endif %}
 
         {% if videos %}
-            <div class="video-grid">
+            <div class="videoBlock">
                 {% for video in videos %}
                 <div class="videoThumbnail">
                 <a href="{% url 'video_detail' video.category.slug video.slug %}"><img src="{{ video.thumbnail.url }}" alt="" style="width:100%"></img></a>
