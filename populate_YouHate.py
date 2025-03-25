@@ -136,7 +136,7 @@ def add_video(category, user, title, video_path, thumbnail_path, description="No
     video.save()
     return video
 
-def add_userProfile(user, profile_picture=default_picture, score=0, bio=""):
+def add_userProfile(user, profile_picture=default_picture, score=0, bio="No Bio"):
     global default_profile_picture_path
 
     image_file = open(profile_picture, "rb")

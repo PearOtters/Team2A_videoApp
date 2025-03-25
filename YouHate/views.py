@@ -49,11 +49,14 @@ def video_detail(request, category_slug, video_slug):
         currentUser = None
         if request.user.is_authenticated:
             currentUser = request.user
-            currentUserProfile = UserProfile.objects.get(user=currentUser)
-            if currentUserProfile in thisVideo.liked_by.all():
-                context_dict['liked'] = True
-            if currentUserProfile in thisVideo.disliked_by.all():
-                context_dict['disliked'] = True
+            try:
+                currentUserProfile = UserProfile.objects.get(user=currentUser)
+                if currentUserProfile in thisVideo.liked_by.all():
+                    context_dict['liked'] = True
+                if currentUserProfile in thisVideo.disliked_by.all():
+                    context_dict['disliked'] = True
+            except UserProfile.DoesNotExist:
+                currentUserProfile = None
 
         thisVideo.views += 1
         thisVideo.save()
@@ -134,7 +137,7 @@ def user_logout(request):
 def user_profile(request, username):
     context_dict = {}
     user_profile = UserProfile.objects.get(user__username=username)
-    videos = Video.objects.filter(user=user_profile).order_by('-created')
+    videos = Video.objects.filter(user=user_profile).order_by('created')
     categories = Category.objects.values_list('name', flat=True)
     top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
     context_dict['user_profile'] = user_profile
@@ -284,7 +287,6 @@ def add_reply(request, comment_id, video_id):
     
     return redirect('index')
 
-@login_required
 def search_videos(request):
     query = request.GET.get('query', '')
     filter_type = request.GET.get('filter', 'video')
