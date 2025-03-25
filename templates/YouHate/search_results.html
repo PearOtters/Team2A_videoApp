@@ -15,14 +15,16 @@ Search Results
         {% if videos %}
             <div class="video-grid">
                 {% for video in videos %}
-                    <div class="video-card">
-                        <a href="{% url 'video_detail' video.category.slug video.slug %}">
-                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
-                            <h3>{{ video.title }}</h3>
-                            <p>By {{ video.user.user.username }}</p>
-                            <p>Category: {{ video.category.name }}</p>
-                        </a>
-                    </div>
+                <div class="videoThumbnail">
+                <a href="{% url 'video_detail' video.category.slug video.slug %}"><img src="{{ video.thumbnail.url }}" alt="" style="width:100%"></img></a>
+                <h3>{{ video.title }}</h3>
+                <div class="videoInfo">
+                    <p class="creator">{{ video.user.user.username }}</p>
+                    <p class="published">{{ video.created|date:"d.m.Y" }}</p>
+                    <p class="dislikes">Dislikes: {{ video.dislikes }}</p>
+                    <p class="views">Views: {{ video.views }}</p>
+                </div>
+            </div>
                 {% endfor %}
             </div>
         {% else %}
