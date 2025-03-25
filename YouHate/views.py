@@ -85,6 +85,10 @@ def video_detail(request, category_slug, video_slug):
 
 def base(request, url, context_dic):
     try:
+        context_dic['baseCurrentUser'] = None
+        if request.user.is_authenticated:
+            context_dic['baseCurrentUser'] = request.user.username
+
         categories = Category.objects.values_list('slug', 'name').order_by('name')
         top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
         context_dic['baseCategoryNames'] = categories
@@ -141,6 +145,12 @@ def user_profile(request, username):
     videos = Video.objects.filter(user=user_profile).order_by('created')
     categories = Category.objects.values_list('name', flat=True)
     top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
+
+    context_dict['isCurrent'] = False
+    if request.user.is_authenticated:
+        if request.user.username == username:
+            context_dict['isCurrent'] = True
+
     context_dict['user_profile'] = user_profile
     context_dict['videos'] = videos
     context_dict['baseCategoryNames'] = categories

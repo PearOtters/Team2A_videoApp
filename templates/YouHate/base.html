@@ -41,7 +41,7 @@
             <div id="aboutUserActionButtons">
                 <a href="{% url 'about' %}" id="aboutBtn" class="headerLinks">About</a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" id="logoutBtn" class="headerLinks">Logout</a>
+                <a href="{% url 'user_profile' baseCurrentUser %}" id="profileBtn" class="headerLinks">{{ baseCurrentUser }}</a>
                 <hr />
                 {% else %}
                     <a href="{% url 'login' %}" id="loginBtn" class="headerLinks">Sign In/<br>Register</a>
