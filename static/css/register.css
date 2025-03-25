@@ -1,0 +1,36 @@
+#registerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    font-size: large;
+}
+
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.formGroup {
+    display: flex;
+    align-items: center;
+}
+
+
+#password1HelpTextContainer {
+    display: flex;
+}
+
+#profilePicInput {
+    margin: 0;
+}
+
+#registerBtn {
+    height: 6%;
+    width: 15%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
