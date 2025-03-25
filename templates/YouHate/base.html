@@ -23,13 +23,14 @@
         <header>
             <div id="searchContainer" class="topBarItems">
                 <search>
-                    <form>
-                        <select name="filters" id="filterDropDown">
+                    <form action="{% url 'search_videos' %}" method="GET">
+                        <select name="filter" id="filterDropDown">
+                            <option value="video">Video Title</option>
                             <option value="creator">Creator</option>
-                            <option value="video">Video</option>
+                            <option value="category">Category</option>
                         </select>
                         <div id="searchAndGoContainer">
-                            <input name="vSearch" id="vSearch" placeholder="Search">
+                            <input name="query" id="vSearch" placeholder="Search" required>
                             <input type="submit" id="goBtn" value="Go">
                         </div>
                     </form>
@@ -37,11 +38,11 @@
                 </search>
             </div>
             <div id="aboutUserActionButtons">
+                <a href="{% url 'about' %}" id="aboutBtn" class="headerLinks">About</a>
                 {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'logout' %}" id="logoutBtn" class="headerLinks">Logout</a>
                 <hr />
                 {% else %}
-                    <a href="{% url 'about' %}" id="aboutBtn" class="headerLinks">About</a>
                     <a href="{% url 'login' %}" id="loginBtn" class="headerLinks">Sign In/<br>Register</a>
                 {% endif %}
             </div>
@@ -51,8 +52,8 @@
             <a href="{% url 'index' %}" id="logoAnchor"><img src="{% static 'logo/placeholderLogo.png' %}" alt="Logo" id="logo"></a>
             <h2>Categories</h2>
             <select name="allCategories" id="allCategoriesDropDown">
-                {% for category in baseCategoryNames %}
-                    <option value="/{{ category }}">{{ category }}</option>
+                {% for slug, name in baseCategoryNames %}
+                    <option value="/{{ slug }}">{{ name }}</option>
                 {% endfor %}
             </select>
             <script>

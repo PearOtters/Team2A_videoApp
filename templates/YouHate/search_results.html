@@ -1,23 +1,21 @@
 {% extends 'YouHate/base.html' %}
+{% load static %}
 
 {% block title_block %}
-    {{ user_profile.user.username }}'s Profile
+Search Results
 {% endblock %}
 
 {% block body_block %}
-    <div class="profile-header">
-        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
-        <div class="bio-container">
-            <h1>{{ user_profile.user.username }}</h1>
-                <h3>Bio:</h3>
-                <p>{{ user_profile.bio }}</p>
-            </div>
-        </div>
+    <div class="search-results">
+        <h1>Search Results</h1>
+        {% if query %}
+            <p>Search results for "{{ query }}" in {{ filter_type }}</p>
+        {% endif %}
 
-        <h2>Videos</h2>
-        <div class="videoBlock">
-            {% for video in videos %}
-            <div class="videoThumbnail">
+        {% if videos %}
+            <div class="videoBlock">
+                {% for video in videos %}
+                <div class="videoThumbnail">
                 <a href="{% url 'video_detail' video.category.slug video.slug %}"><img src="{{ video.thumbnail.url }}" alt="" style="width:100%"></img></a>
                 <h3>{{ video.title }}</h3>
                 <div class="videoInfo">
@@ -27,9 +25,10 @@
                     <p class="views">Views: {{ video.views }}</p>
                 </div>
             </div>
-            {% empty %}
-                <p>No videos uploaded yet.</p>
-            {% endfor %}
-        </div>        
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No videos found.</p>
+        {% endif %}
     </div>
 {% endblock %}

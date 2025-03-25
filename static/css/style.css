@@ -72,6 +72,22 @@ main {
   grid-template-rows: 50%, 50%;
 }
 
+#video-stats {
+  display: grid;
+  position: relative;
+  top: 10px;
+  grid-template-areas:
+      "video-views video-published video-dislikes video-dislikes-to-like-ratio";
+  grid-template-columns: 1fr, 1fr, 1fr, 1fr;
+  grid-template-rows: auto;
+  gap: 30px;
+}
+
+.video-views, .video-dislikes, .video-published, .video-dislikes-to-like-ratio {
+  margin: 0;
+  white-space: nowrap;
+}
+
 .suggestedThumbnail {
   max-height:15vh;
   max-width:90%;
@@ -237,21 +253,13 @@ footer {
 
 .videoThumbnail img {
   width: 100%; 
-  height: auto;
+  height: 200px;
 }
 
 .videoThumbnail h3 {
   font-size: 1.2rem;  
   color: #333;       
   font-weight: bold; 
-  margin-top: 10px;
-  margin-bottom: 15px;
-}
-
-.videoThumbnail h4 {
-  font-size: 1.2rem;      
-  color: #333;           
-  font-weight: bold;     
   margin-top: 10px;
   margin-bottom: 15px;
 }
@@ -266,4 +274,8 @@ footer {
 
 .about-text {
   font-size: 2rem;
+}
+
+.red {
+  background-color: red;
 }
