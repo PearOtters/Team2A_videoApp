@@ -1,0 +1,32 @@
+{% extends 'YouHate/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Search Results
+{% endblock %}
+
+{% block body_block %}
+    <div class="search-results">
+        <h1>Search Results</h1>
+        {% if query %}
+            <p>Search results for "{{ query }}" in {{ filter_type }}</p>
+        {% endif %}
+
+        {% if videos %}
+            <div class="video-grid">
+                {% for video in videos %}
+                    <div class="video-card">
+                        <a href="{% url 'video_detail' video.category.slug video.slug %}">
+                            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+                            <h3>{{ video.title }}</h3>
+                            <p>By {{ video.user.user.username }}</p>
+                            <p>Category: {{ video.category.name }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No videos found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -283,3 +283,26 @@ def add_reply(request, comment_id, video_id):
             return redirect('index')
     
     return redirect('index')
+
+@login_required
+def search_videos(request):
+    query = request.GET.get('query', '')
+    filter_type = request.GET.get('filter', 'video')
+    context_dict = {}
+
+    try:
+        if filter_type == 'creator':
+            videos = Video.objects.filter(user__user__username__icontains=query)
+        elif filter_type == 'category':
+            videos = Video.objects.filter(category__name__icontains=query)
+        else:
+            videos = Video.objects.filter(title__icontains=query)
+
+        context_dict['videos'] = videos
+        context_dict['query'] = query
+        context_dict['filter_type'] = filter_type
+    except Exception as e:
+        context_dict['videos'] = None
+        context_dict['error'] = str(e)
+
+    return base(request, 'YouHate/search_results.html', context_dict)

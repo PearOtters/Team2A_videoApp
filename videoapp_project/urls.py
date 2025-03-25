@@ -33,6 +33,7 @@ urlpatterns = [
     path('dislike-video/', views.dislike_video, name='dislike_video'),
     path('add_comment/<int:video_id>/', views.add_comment, name='add_comment'),
     path('add_reply/<int:comment_id>/<int:video_id>/', views.add_reply, name='add_reply'),
+    path('search/', views.search_videos, name='search_videos'),
     path('<slug:category_slug>/', views.category_detail, name='category_detail'),
     path('<slug:category_slug>/upload/', views.upload, name='upload'),
     path('<slug:category_slug>/<slug:video_slug>/', views.video_detail, name='video_detail'),
