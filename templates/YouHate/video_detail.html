@@ -50,6 +50,17 @@
                         </a></div>
                         <div class="commentBody"><p>{{ c.body }}</p></div>
                     </div>
+                    {% if user.is_authenticated %}
+                        <div id="replyForm">
+                            <form action="{% url 'add_reply' c.id thisVideo.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{ thisVideo.id }}">
+                                <input type="hidden" name="comment_id" value="{{ c.id }}">
+                                <textarea name="body" id="reply" placeholder="Reply"></textarea>
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
+                    {% endif %}
                     {% for r in replies %}
                         {% if r.comment == c %}
                             <div class="reply">
@@ -63,6 +74,25 @@
             <p>No comments yet</p>
             {% endif %}
             </div>
+            {% if user.is_authenticated %}
+                <div id="commentForm">
+                    <form action="{% url 'add_comment' thisVideo.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{ thisVideo.id }}">
+                        <textarea name="body" id="comment" placeholder="Comment"></textarea>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            {% endif %}
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div id="videoInformation">
             <div id="video-stats">
@@ -73,101 +103,19 @@
             </div>
             <br>
             <div class="like-dislike-button">
-                <button id="likeButton" onclick="likeVideo()">Like</button>
-                <button id="dislikeButton" onclick="dislikeVideo()">Dislike</button>
+                {% if user.is_authenticated %}
+                    {% if liked %}
+                        <button id="like-button" class="red" onclick="likeVideo()">Like</button>
+                    {% else %}
+                        <button id="like-button" onclick="likeVideo()">Like</button>
+                    {% endif %}
+                    {% if disliked %}
+                        <button id="dislike-button" class="red" onclick="dislikeVideo()">Dislike</button>
+                    {% else %}
+                        <button id="dislike-button" onclick="dislikeVideo()">Dislike</button>
+                    {% endif %}
+                {% endif %}
             </div>
-            <script>
-                function getCsrfToken() {
-                    const cookieValue = document.cookie
-                        .split('; ')
-                        .find(row => row.startsWith('csrftoken='))
-                        ?.split('=')[1];
-                    return cookieValue;
-                }
-            
-                function likeVideo() {
-                    fetch('{% url "like_video" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': getCsrfToken(),
-                        },
-                        body: JSON.stringify({
-                            video_id: {{ thisVideo.id }}
-                        })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
-                            if (ratioElement) {
-                                ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
-                            }
-                            
-                            const likeButton = document.getElementById('likeButton');
-                            if (likeButton) {
-                                likeButton.classList.add('liked');
-                                likeButton.disabled = true;
-                            }
-                            
-                            alert('Video liked successfully!');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error liking video:', error);
-                        alert('Failed to like video. Please try again.');
-                    });
-                }
-            
-                function dislikeVideo() {
-                    fetch('{% url "dislike_video" %}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': getCsrfToken(),
-                        },
-                        body: JSON.stringify({
-                            video_id: {{ thisVideo.id }}
-                        })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            const dislikesElement = document.querySelector('.video-dislikes');
-                            if (dislikesElement) {
-                                dislikesElement.textContent = `Dislikes: ${data.dislikes}`;
-                            }
-                            
-                            const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
-                            if (ratioElement) {
-                                ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
-                            }
-                            
-                            const dislikeButton = document.getElementById('dislikeButton');
-                            if (dislikeButton) {
-                                dislikeButton.classList.add('disliked');
-                                dislikeButton.disabled = true;
-                            }
-                            
-                            alert('Video disliked successfully!');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error disliking video:', error);
-                        alert('Failed to dislike video. Please try again.');
-                    });
-                }
-            </script>
             <br>
             <div id="user">
                 <a href="{% url 'user_profile' thisVideo.user.user.username %}">
@@ -181,4 +129,111 @@
             </div>
         </div>
     </div>
+    <script>
+        function getCsrfToken() {
+            const cookieValue = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrftoken='))
+                ?.split('=')[1];
+            return cookieValue;
+        }
+    
+        function likeVideo() {
+            fetch('{% url "like_video" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken(),
+                },
+                body: JSON.stringify({
+                    user_id: {{ user.id }},
+                    video_id: {{ thisVideo.id }}
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const dislikesElement = document.querySelector('.video-dislikes');
+                    if (dislikesElement) {
+                        dislikesElement.textContent = `Dislikes: ${data.dislikes}`;
+                    }
+
+                    const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
+                    if (ratioElement) {
+                        ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
+                    }
+                    
+                    const likeButton = document.getElementById('like-button');
+                    if (likeButton) {
+                        likeButton.classList.toggle('red');
+                    }
+
+                    if (data.hasLiked) {
+                        const dislikeButton = document.getElementById('dislike-button');
+                        if (dislikeButton) {
+                            dislikeButton.classList.remove('red');
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error liking video:', error);
+                alert('Unknown error. Try signing in');
+            });
+        }
+    
+        function dislikeVideo() {
+            const dislikeButton = document.getElementById('dislikeButton');
+            fetch('{% url "dislike_video" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken(),
+                },
+                body: JSON.stringify({
+                    user_id: {{ user.id }},
+                    video_id: {{ thisVideo.id }}
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const dislikesElement = document.querySelector('.video-dislikes');
+                    if (dislikesElement) {
+                        dislikesElement.textContent = `Dislikes: ${data.dislikes}`;
+                    }
+                    
+                    const ratioElement = document.querySelector('.video-dislikes-to-like-ratio');
+                    if (ratioElement) {
+                        ratioElement.textContent = `Dislikes to likes ratio: ${data.ratio.toFixed(2)}%`;
+                    }
+                    
+                    const dislikeButton = document.getElementById('dislike-button');
+                    if (dislikeButton) {
+                        dislikeButton.classList.toggle('red');
+                        if (data.hasDisliked) {
+                            const likeButton = document.getElementById('like-button');
+                            if (likeButton) {
+                                likeButton.classList.remove('red');
+                            }
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error disliking video:', error);
+                alert('Not signed in. Please sign in to dislike videos.');
+            });
+        }
+    </script>
 {% endblock %}

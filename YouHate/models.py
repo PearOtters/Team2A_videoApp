@@ -42,6 +42,8 @@ class Video(models.Model):
     views = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
+    disliked_by = models.ManyToManyField(UserProfile, related_name='disliked_videos', blank=True, default=None)
+    liked_by = models.ManyToManyField(UserProfile, related_name='liked_videos', blank=True, default=None)
     slug = models.SlugField(unique=True, blank=True)
 
     def save(self, *args, **kwargs):

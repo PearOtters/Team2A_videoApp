@@ -253,21 +253,13 @@ footer {
 
 .videoThumbnail img {
   width: 100%; 
-  height: auto;
+  height: 200px;
 }
 
 .videoThumbnail h3 {
   font-size: 1.2rem;  
   color: #333;       
   font-weight: bold; 
-  margin-top: 10px;
-  margin-bottom: 15px;
-}
-
-.videoThumbnail h4 {
-  font-size: 1.2rem;      
-  color: #333;           
-  font-weight: bold;     
   margin-top: 10px;
   margin-bottom: 15px;
 }
@@ -282,4 +274,8 @@ footer {
 
 .about-text {
   font-size: 2rem;
+}
+
+.red {
+  background-color: red;
 }

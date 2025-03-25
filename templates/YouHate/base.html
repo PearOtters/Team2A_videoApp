@@ -24,13 +24,14 @@
         <header>
             <div id="searchContainer" class="topBarItems">
                 <search>
-                    <form>
-                        <select name="filters" id="filterDropDown">
+                    <form action="{% url 'search_videos' %}" method="GET">
+                        <select name="filter" id="filterDropDown">
+                            <option value="video">Video Title</option>
                             <option value="creator">Creator</option>
-                            <option value="video">Video</option>
+                            <option value="category">Category</option>
                         </select>
                         <div id="searchAndGoContainer">
-                            <input name="vSearch" id="vSearch" placeholder="Search">
+                            <input name="query" id="vSearch" placeholder="Search" required>
                             <input type="submit" id="goBtn" value="Go">
                         </div>
                     </form>
