@@ -32,17 +32,17 @@ main {
 }
 
 .videoBlock::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Light grey background */
+  background: #f1f1f1; 
   border-radius: 10px;
 }
 
 .videoBlock::-webkit-scrollbar-thumb {
-  background: #888; /* Darker grey for the scroll */
+  background: #888; 
   border-radius: 10px;
 }
 
 .videoBlock::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Darker colour on hover */
+  background: #555; 
 }
 
 .videoThumbnail {
