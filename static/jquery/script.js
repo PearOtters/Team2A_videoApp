@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".videoBlock").on("wheel", function (event) {
+    $(".videoBlock").on("scroll", function (event) {
         event.preventDefault();
         
         let scrollAmount = event.originalEvent.deltaY || event.originalEvent.deltaX; 
@@ -8,7 +8,7 @@ $(document).ready(function () {
         }, 200); // Smooth Scrolling
     });
 
-    $("#commentsScroll").on("wheel", function (event) {
+    $("#commentsScroll").on("scroll", function (event) {
         event.preventDefault();
         
         let scrollAmount = event.originalEvent.deltaY || event.originalEvent.deltaX; 
