@@ -34,7 +34,7 @@ urlpatterns = [
     path('add_comment/<int:video_id>/', views.add_comment, name='add_comment'),
     path('add_reply/<int:comment_id>/<int:video_id>/', views.add_reply, name='add_reply'),
     path('search/', views.search_videos, name='search_videos'),
+    path('upload/', views.upload_video, name='upload_video'),
     path('<slug:category_slug>/', views.category_detail, name='category_detail'),
-    path('<slug:category_slug>/upload/', views.upload, name='upload'),
     path('<slug:category_slug>/<slug:video_slug>/', views.video_detail, name='video_detail'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

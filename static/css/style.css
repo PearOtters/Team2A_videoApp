@@ -240,13 +240,13 @@ footer {
 
 .bio-container h3 {
   font-size: 1.3rem;
-  color: #333;
+  color: #000000;
   margin-bottom: 10px; 
 }
 
 .bio-container p {
   font-size: 1rem;
-  color: #666;
+  color: #000000;
   line-height: 1.5;
   margin-top: 0; 
 }
@@ -284,4 +284,66 @@ footer {
   position: absolute;
   right: 30px;
   font-size: 30px;
+}
+
+.upload-button-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.upload-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.video-upload-container {
+  margin: 20px auto;
+  width: 50%;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.video-upload-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.video-upload-container label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.video-upload-container input,
+.video-upload-container textarea,
+.video-upload-container select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.video-upload-container button {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.video-upload-container button:hover {
+  background-color: #0056b3;
 }

@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import DatabaseError
 from .forms import CustomUserCreationForm
 import random, json
+from .forms import VideoUploadForm
 
 def index(request):
     context_dict = {}
@@ -166,8 +167,24 @@ def user_profile(request, username):
     return base(request, 'YouHate/profile.html', context_dict)
 
 @login_required
-def upload(request, category_slug):
-    return HttpResponse("Under construction...")
+def upload_video(request):
+    baseCurrentUser = request.user.username if request.user.is_authenticated else None
+    categories = Category.objects.all()
+    if request.method == 'POST':
+        form = VideoUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            video = form.save(commit=False)
+            video.user = request.user.userprofile
+            video.save()
+            return redirect('user_profile', request.user.username)
+    else:
+        form = VideoUploadForm()
+
+    return render(request, 'YouHate/upload_video.html', {
+        'form': form,
+        'categories': categories,
+        'baseCurrentUser': baseCurrentUser
+    })
 
 def random_video(request):
     try:

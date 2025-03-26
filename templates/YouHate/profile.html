@@ -12,29 +12,37 @@
         <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
         <div class="bio-container">
             <h1>{{ user_profile.user.username }}</h1>
-                <h3>Bio:</h3>
-                <p>{{ user_profile.bio }}</p>
+            <h3>Bio:</h3>
+            <p>{{ user_profile.bio }}</p>
+        </div>
+    </div>
+
+    {% if isCurrent %}
+    <div class="upload-button-container">
+        <a href="{% url 'upload_video' %}" class="upload-btn">Upload Video</a>
+    </div>
+    {% endif %}
+
+    <h2>Videos</h2>
+    <div class="videoBlock">
+        {% for video in videos %}
+        <div class="videoThumbnail">
+            <a href="{% url 'video_detail' video.category.slug video.slug %}">
+                <img src="{{ video.thumbnail.url }}" alt="" style="width:100%">
+            </a>
+            <h3>{{ video.title }}</h3>
+            <div class="videoInfo">
+                <p class="creator">{{ video.user.user.username }}</p>
+                <p class="published">{{ video.created|date:"d.m.Y" }}</p>
+                <p class="dislikes">Dislikes: {{ video.dislikes }}</p>
+                <p class="views">Views: {{ video.views }}</p>
             </div>
         </div>
-
-        <h2>Videos</h2>
-        <div class="videoBlock">
-            {% for video in videos %}
-            <div class="videoThumbnail">
-                <a href="{% url 'video_detail' video.category.slug video.slug %}"><img src="{{ video.thumbnail.url }}" alt="" style="width:100%"></img></a>
-                <h3>{{ video.title }}</h3>
-                <div class="videoInfo">
-                    <p class="creator">{{ video.user.user.username }}</p>
-                    <p class="published">{{ video.created|date:"d.m.Y" }}</p>
-                    <p class="dislikes">Dislikes: {{ video.dislikes }}</p>
-                    <p class="views">Views: {{ video.views }}</p>
-                </div>
-            </div>
-            {% empty %}
-                <p>No videos uploaded yet.</p>
-            {% endfor %}
-        </div>        
+        {% empty %}
+            <p>No videos uploaded yet.</p>
+        {% endfor %}
     </div>
+
     <script>
         function logoutBtn() {
             window.location.href = "{% url 'logout' %}";
