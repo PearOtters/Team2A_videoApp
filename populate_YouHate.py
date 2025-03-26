@@ -77,7 +77,8 @@ def populate():
         "http://vevo.ly/3WpVJn",
         views=55_634_574,
         likes=618_000,
-        dislikes=18_000
+        dislikes=18_000,
+        slug="KendrickLamarPop"
     )
 
     video2 = add_video(
@@ -89,7 +90,8 @@ def populate():
         description="Microplastics are accumulating in human brains at an alarming rate",
         views=351_072_792,
         likes=17_000_000,
-        dislikes=0
+        dislikes=0,
+        slug="MeAtTheZooVidPop"
     )
 
     comments = [
@@ -119,7 +121,7 @@ def add_category(name, video_count=0):
     category, created = Category.objects.get_or_create(name=name, defaults={'video_count': video_count})
     return category
 
-def add_video(category, user, title, video_path, thumbnail_path, description="No description", created=timezone.now(), views=0, likes=0, dislikes=0):
+def add_video(category, user, title, video_path, thumbnail_path, description="No description", created=timezone.now(), views=0, likes=0, dislikes=0, slug=None):
     video_file = open(video_path, "rb")
     thumb_file = open(thumbnail_path, "rb")
 
@@ -134,6 +136,11 @@ def add_video(category, user, title, video_path, thumbnail_path, description="No
     video_file.close()
     thumb_file.close()
     video.save()
+
+    if slug is not None:
+        video.slug = slug
+        video.save()
+
     return video
 
 def add_userProfile(user, profile_picture=default_picture, score=0, bio="No Bio!"):
