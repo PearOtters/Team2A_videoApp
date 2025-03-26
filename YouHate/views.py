@@ -43,11 +43,16 @@ def category_detail(request, category_slug):
 
 def video_detail(request, category_slug, video_slug):
     context_dict = {}
+    hasVideo = False
     try:
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
-        thisVideo = videos.filter(slug=video_slug)[0]
+        hasVideo = videos.filter(slug=video_slug).exists()
+        thisVideo = None
+        if hasVideo:
+            thisVideo = videos.filter(slug=video_slug)[0]
         currentUser = None
+        ratio = 0
         if request.user.is_authenticated:
             currentUser = request.user
             try:
@@ -59,16 +64,18 @@ def video_detail(request, category_slug, video_slug):
             except UserProfile.DoesNotExist:
                 currentUserProfile = None
 
-        thisVideo.views += 1
-        thisVideo.save()
+        if hasVideo:
+            thisVideo.views += 1
+            thisVideo.save()
+
+            if thisVideo.likes > 0:
+                ratio = (thisVideo.dislikes / thisVideo.likes) * 100
+            elif thisVideo.dislikes > 0:
+                ratio = 100
 
         suggested = videos.order_by('-dislikes')
-        ratio = 0
-        if thisVideo.likes > 0:
-            ratio = (thisVideo.dislikes / thisVideo.likes) * 100
-        elif thisVideo.dislikes > 0:
-            ratio = 100
 
+        context_dict['hasVideo'] = hasVideo
         context_dict['currentUser'] = currentUser
         context_dict['ratio'] = ratio
         context_dict['comments'] = Comment.objects.filter(video=thisVideo)
