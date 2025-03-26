@@ -279,3 +279,9 @@ footer {
 .red {
   background-color: red;
 }
+
+#logout-btn {
+  position: absolute;
+  right: 30px;
+  font-size: 30px;
+}

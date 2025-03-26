@@ -1,15 +1,77 @@
 {% extends 'YouHate/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
-{% block title_block %}Register{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
 
 {% block body_block %}
-
+<div id="registerContainer">
     <h1>Register</h1>
-    <form action=""  enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
 
+    <form id="registerForm" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="formGroup">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {% if form.username.help_text %}
+                <small class="helpText">{{ form.username.help_text }}</small>
+            {% endif %}
+            {% for error in form.username.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="formGroup">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% if form.email.help_text %}
+                <small class="helpText">{{ form.email.help_text }}</small>
+            {% endif %}
+            {% for error in form.email.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div id="passwordContainer" class="formGroup">
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            <div id="password1HelpTextContainer">
+                {% if form.password1.help_text %}
+                    <small class="helpText">{{ form.password1.help_text }}</small>
+                {% endif %}
+            </div>
+            {% for error in form.password1.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="formGroup">
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            {% if form.password2.help_text %}
+                <small class="helpText">{{ form.password2.help_text }}</small>
+            {% endif %}
+            {% for error in form.password2.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div id="profilePicContainer" class="formGroup">
+            {{ form.picture.label_tag }}
+            <div id="profilePicInput">
+            {{ form.picture }}
+            </div>
+            {% if form.picture.help_text %}
+                <small class="helpText">{{ form.picture.help_text }}</small>
+            {% endif %}
+            {% for error in form.picture.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" id="registerBtn">Register</button>
+    </form>
+</div>
 {% endblock %}
