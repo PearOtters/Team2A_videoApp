@@ -180,7 +180,7 @@ def upload_video(request):
     else:
         form = VideoUploadForm()
 
-    return render(request, 'YouHate/upload_video.html', {
+    return base(request, 'YouHate/upload_video.html', {
         'form': form,
         'categories': categories,
         'baseCurrentUser': baseCurrentUser

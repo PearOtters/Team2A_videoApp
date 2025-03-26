@@ -18,9 +18,9 @@
     </div>
 
     {% if isCurrent %}
-    <div class="upload-button-container">
-        <a href="{% url 'upload_video' %}" class="upload-btn">Upload Video</a>
-    </div>
+        <a href="{% url 'upload_video' %}">
+            <button id="uploadButton" type="button">Upload</button>
+        </a>
     {% endif %}
 
     <h2>Videos</h2>
