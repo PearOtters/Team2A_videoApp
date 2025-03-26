@@ -13,7 +13,6 @@ class IndexPageTests(TestCase):
     def setUp(self):
         self.views_module = importlib.import_module('YouHate.views')
         self.views_module_listing = dir(self.views_module)
-
         self.project_urls_module = importlib.import_module('videoapp_project.urls')
 
     def test_view_exists(self):
@@ -45,6 +44,7 @@ class AboutPageTests(TestCase):
     def setUp(self):
         self.views_module = importlib.import_module('YouHate.views')
         self.views_module_listing = dir(self.views_module)
+        self.project_urls_module = importlib.import_module('videoapp_project.urls')
     
     def test_view_exists(self):
         name_exists = 'about' in self.views_module_listing
@@ -54,6 +54,14 @@ class AboutPageTests(TestCase):
         self.assertTrue(is_callable, f"{FAILURE_HEADER}The about() view is not callable.{FAILURE_FOOTER}")
     
     def test_mapping_exists(self):
+        about_mapping_exists = False
+        
+        for mapping in self.project_urls_module.urlpatterns:
+            if hasattr(mapping, 'name'):
+                if mapping.name == 'about':
+                    about_mapping_exists = True
+        
+        self.assertTrue(about_mapping_exists, f"{FAILURE_HEADER}The about URL mapping could not be found.{FAILURE_FOOTER}")
         self.assertEquals(reverse('about'), '/about/', f"{FAILURE_HEADER}The about URL lookup failed.{FAILURE_FOOTER}")
     
     def test_response(self):
@@ -63,19 +71,169 @@ class AboutPageTests(TestCase):
         self.assertContains(response, "YouHate is a website", msg_prefix=f"{FAILURE_HEADER}The about view did not respond with the expected message.{FAILURE_FOOTER}")
 
 class CategoryPageTests(TestCase):
-    pass
+
+    def setUp(self):
+        self.views_module = importlib.import_module('YouHate.views')
+        self.views_module_listing = dir(self.views_module)
+        self.project_urls_module = importlib.import_module('videoapp_project.urls')
+
+        populate()
+    
+    def test_view_exists(self):
+        name_exists = 'category_detail' in self.views_module_listing
+        is_callable = callable(self.views_module.category_detail)
+        
+        self.assertTrue(name_exists, f"{FAILURE_HEADER}The category_detail() view does not exist.{FAILURE_FOOTER}")
+        self.assertTrue(is_callable, f"{FAILURE_HEADER}The category_detail() view is not callable.{FAILURE_FOOTER}")
+    
+    def test_mapping_exists(self):
+        category_mapping_exists = False
+        
+        for mapping in self.project_urls_module.urlpatterns:
+            if hasattr(mapping, 'name'):
+                if mapping.name == 'category_detail':
+                    category_mapping_exists = True
+        
+        self.assertTrue(category_mapping_exists, f"{FAILURE_HEADER}The category_detail URL mapping could not be found.{FAILURE_FOOTER}")
+        self.assertEquals(reverse('category_detail', kwargs={'category_slug': 'music'}), '/music/', f"{FAILURE_HEADER}The category_detail URL lookup failed.{FAILURE_FOOTER}")
+    
+    def test_response(self):
+        response = self.client.get(reverse('category_detail', kwargs={'category_slug': 'music'}))
+        
+        self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}When requesting the category_detail view, the server did not respond correctly.{FAILURE_FOOTER}")
 
 class VideoPageTests(TestCase):
-    pass
+
+    def setUp(self):
+        self.views_module = importlib.import_module('YouHate.views')
+        self.views_module_listing = dir(self.views_module)
+        self.project_urls_module = importlib.import_module('videoapp_project.urls')
+
+        populate()
+    
+    def test_view_exists(self):
+        name_exists = 'video_detail' in self.views_module_listing
+        is_callable = callable(self.views_module.video_detail)
+        
+        self.assertTrue(name_exists, f"{FAILURE_HEADER}The video_detail() view does not exist.{FAILURE_FOOTER}")
+        self.assertTrue(is_callable, f"{FAILURE_HEADER}The video_detail() view is not callable.{FAILURE_FOOTER}")
+    
+    def test_mapping_exists(self):
+        video_mapping_exists = False
+        
+        for mapping in self.project_urls_module.urlpatterns:
+            if hasattr(mapping, 'name'):
+                if mapping.name == 'video_detail':
+                    video_mapping_exists = True
+        
+        self.assertTrue(video_mapping_exists, f"{FAILURE_HEADER}The video_detail URL mapping could not be found.{FAILURE_FOOTER}")
+        self.assertEquals(reverse('video_detail', kwargs={'category_slug': 'music', 'video_slug': 'KendrickLamarPop'}), '/music/KendrickLamarPop/', f"{FAILURE_HEADER}The video_detail URL lookup failed.{FAILURE_FOOTER}")
+    
+    def test_response(self):
+        response = self.client.get(reverse('video_detail', kwargs={'category_slug': 'music', 'video_slug': 'KendrickLamarPop'}))
+        
+        self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}When requesting the video_detail view, the server did not respond correctly.{FAILURE_FOOTER}")
+        self.assertContains(response, "All The Stars Kendrick Lamar", msg_prefix=f"{FAILURE_HEADER}The video_detail view did not respond with the expected message.{FAILURE_FOOTER}")
 
 class ProfilePageTests(TestCase):
-    pass
+
+    def setUp(self):
+        self.views_module = importlib.import_module('YouHate.views')
+        self.views_module_listing = dir(self.views_module)
+        self.project_urls_module = importlib.import_module('videoapp_project.urls')
+
+        populate()
+    
+    def test_view_exists(self):
+        name_exists = 'user_profile' in self.views_module_listing
+        is_callable = callable(self.views_module.user_profile)
+        
+        self.assertTrue(name_exists, f"{FAILURE_HEADER}The user_profile() view does not exist.{FAILURE_FOOTER}")
+        self.assertTrue(is_callable, f"{FAILURE_HEADER}The user_profile() view is not callable.{FAILURE_FOOTER}")
+    
+    def test_mapping_exists(self):
+        profile_mapping_exists = False
+        
+        for mapping in self.project_urls_module.urlpatterns:
+            if hasattr(mapping, 'name'):
+                if mapping.name == 'user_profile':
+                    profile_mapping_exists = True
+        
+        self.assertTrue(profile_mapping_exists, f"{FAILURE_HEADER}The user_profile URL mapping could not be found.{FAILURE_FOOTER}")
+        self.assertEquals(reverse('user_profile', kwargs={'username': 'user1'}), '/profile/user1/', f"{FAILURE_HEADER}The user_profile URL lookup failed.{FAILURE_FOOTER}")
+    
+    def test_response(self):
+        response = self.client.get(reverse('user_profile', kwargs={'username': 'user1'}))
+        
+        self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}When requesting the user_profile view, the server did not respond correctly.{FAILURE_FOOTER}")
+        self.assertContains(response, "user1", msg_prefix=f"{FAILURE_HEADER}The user_profile view did not respond with the expected message.{FAILURE_FOOTER}")
 
 class RegisterPageTests(TestCase):
-    pass
+
+    def setUp(self):
+        self.views_module = importlib.import_module('YouHate.views')
+        self.views_module_listing = dir(self.views_module)
+        self.project_urls_module = importlib.import_module('videoapp_project.urls')
+
+        populate()
+    
+    def test_view_exists(self):
+        name_exists = 'user_register' in self.views_module_listing
+        is_callable = callable(self.views_module.user_register)
+        
+        self.assertTrue(name_exists, f"{FAILURE_HEADER}The user_register() view does not exist.{FAILURE_FOOTER}")
+        self.assertTrue(is_callable, f"{FAILURE_HEADER}The user_register() view is not callable.{FAILURE_FOOTER}")
+    
+    def test_mapping_exists(self):
+        register_mapping_exists = False
+        
+        for mapping in self.project_urls_module.urlpatterns:
+            if hasattr(mapping, 'name'):
+                if mapping.name == 'register':
+                    register_mapping_exists = True
+        
+        self.assertTrue(register_mapping_exists, f"{FAILURE_HEADER}The register URL mapping could not be found.{FAILURE_FOOTER}")
+        self.assertEquals(reverse('register'), '/register/', f"{FAILURE_HEADER}The register URL lookup failed.{FAILURE_FOOTER}")
+    
+    def test_response(self):
+        response = self.client.get(reverse('register'))
+        
+        self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}When requesting the user_register view, the server did not respond correctly.{FAILURE_FOOTER}")
+        self.assertContains(response, "Register", msg_prefix=f"{FAILURE_HEADER}The user_register view did not respond with the expected message.{FAILURE_FOOTER}")
 
 class LoginPageTests(TestCase):
-    pass
+    
+    def setUp(self):
+        self.views_module = importlib.import_module('YouHate.views')
+        self.views_module_listing = dir(self.views_module)
+        self.project_urls_module = importlib.import_module('videoapp_project.urls')
+
+        populate()
+    
+    def test_view_exists(self):
+        name_exists = 'sign_in_view' in self.views_module_listing
+        is_callable = callable(self.views_module.sign_in_view)
+        
+        self.assertTrue(name_exists, f"{FAILURE_HEADER}The sign_in_view() view does not exist.{FAILURE_FOOTER}")
+        self.assertTrue(is_callable, f"{FAILURE_HEADER}The sign_in_view() view is not callable.{FAILURE_FOOTER}")
+    
+    def test_mapping_exists(self):
+        login_mapping_exists = False
+        
+        for mapping in self.project_urls_module.urlpatterns:
+            if hasattr(mapping, 'name'):
+                if mapping.name == 'login':
+                    login_mapping_exists = True
+        
+        self.assertTrue(login_mapping_exists, f"{FAILURE_HEADER}The login URL mapping could not be found.{FAILURE_FOOTER}")
+        self.assertEquals(reverse('login'), '/login/', f"{FAILURE_HEADER}The login URL lookup failed.{FAILURE_FOOTER}")
+    
+    def test_response(self):
+        response = self.client.get(reverse('login'))
+        
+        self.assertEqual(response.status_code, 200, f"{FAILURE_HEADER}When requesting the login view, the server did not respond correctly.{FAILURE_FOOTER}")
+        self.assertContains(response, "Sign In", msg_prefix=f"{FAILURE_HEADER}The login view did not respond with the expected message.{FAILURE_FOOTER}")
+
 
 class TemplateTests(TestCase):
 
@@ -94,82 +252,40 @@ class TemplateTests(TestCase):
         self.assertTrue(os.path.exists(template_base_path), f"{FAILURE_HEADER}Failed to find the base.html template.{FAILURE_FOOTER}")
     
     def test_template_usage(self):
-        
         populate()
         
         urls = [reverse('about'),
-                #reverse('login'),
+                reverse('login'),
                 reverse('register'),
                 reverse('user_profile', kwargs={'username': 'user1'}),
-                reverse('random_video'),
                 reverse('category_detail', kwargs={'category_slug': 'music'}),
-                #reverse('video_detail', kwargs={'category_slug': 'music', 'video_slug': ''}),
+                reverse('video_detail', kwargs={'category_slug': 'music', 'video_slug': 'KendrickLamarPop'}),
                 reverse('index'),
                 ]
 
         templates = ['YouHate/about.html',
-                     #'YouHate/login.html',
+                     'YouHate/sign_in.html',
                      'YouHate/register.html',
                      'YouHate/profile.html',
-                     'YouHate/video_detail.html',
                      'YouHate/category_detail.html',
-                     #'YouHate/video_detail.html',
-                     'rango/index.html',]
+                     'YouHate/video_detail.html',
+                     'YouHate/index.html',]
         
         for url, template in zip(urls, templates):
             response = self.client.get(url)
             self.assertTemplateUsed(response, template)
 
-    def test_title_blocks(self):
-        """
-        Tests whether the title blocks in each page are the expected values.
-        This is probably the easiest way to check for blocks.
-        """
-        populate()
-        template_base_path = os.path.join(settings.TEMPLATE_DIR, 'rango')
-        
-        mappings = {
-            reverse('rango:about'): {'full_title_pattern': r'<title>(\s*|\n*)Rango(\s*|\n*)-(\s*|\n*)About Rango(\s*|\n*)</title>',
-                                     'block_title_pattern': r'{% block title_block %}(\s*|\n*)About Rango(\s*|\n*){% (endblock|endblock title_block) %}',
-                                     'template_filename': 'about.html'},
-            reverse('rango:add_category'): {'full_title_pattern': r'<title>(\s*|\n*)Rango(\s*|\n*)-(\s*|\n*)Add a Category(\s*|\n*)</title>',
-                                            'block_title_pattern': r'{% block title_block %}(\s*|\n*)Add a Category(\s*|\n*){% (endblock|endblock title_block) %}',
-                                            'template_filename': 'add_category.html'},
-            reverse('rango:add_page', kwargs={'category_name_slug': 'python'}): {'full_title_pattern': r'<title>(\s*|\n*)Rango(\s*|\n*)-(\s*|\n*)Add a Page(\s*|\n*)</title>',
-                                                                                 'block_title_pattern': r'{% block title_block %}(\s*|\n*)Add a Page(\s*|\n*){% (endblock|endblock title_block) %}',
-                                                                                 'template_filename': 'add_page.html'},
-            reverse('rango:show_category', kwargs={'category_name_slug': 'python'}): {'full_title_pattern': r'<title>(\s*|\n*)Rango(\s*|\n*)-(\s*|\n*)Python(\s*|\n*)</title>',
-                                                                                      'block_title_pattern': r'{% block title_block %}(\s*|\n*){% if category %}(\s*|\n*){{ category.name }}(\s*|\n*){% else %}(\s*|\n*)Unknown Category(\s*|\n*){% endif %}(\s*|\n*){% (endblock|endblock title_block) %}',
-                                                                                      'template_filename': 'category.html'},
-            reverse('rango:index'): {'full_title_pattern': r'<title>(\s*|\n*)Rango(\s*|\n*)-(\s*|\n*)Homepage(\s*|\n*)</title>',
-                                     'block_title_pattern': r'{% block title_block %}(\s*|\n*)Homepage(\s*|\n*){% (endblock|endblock title_block) %}',
-                                     'template_filename': 'index.html'},
-        }
-
-        for url in mappings.keys():
-            full_title_pattern = mappings[url]['full_title_pattern']
-            template_filename = mappings[url]['template_filename']
-            block_title_pattern = mappings[url]['block_title_pattern']
-
-            request = self.client.get(url)
-            content = request.content.decode('utf-8')
-            template_str = self.get_template(os.path.join(template_base_path, template_filename))
-
-            self.assertTrue(re.search(full_title_pattern, content), f"{FAILURE_HEADER}When looking at the response of GET '{url}', we couldn't find the correct <title> block. Check the exercises on Chapter 8 for the expected title.{FAILURE_FOOTER}")
-            self.assertTrue(re.search(block_title_pattern, template_str), f"{FAILURE_HEADER}When looking at the source of template '{template_filename}', we couldn't find the correct template block. Are you using template inheritence correctly, and did you spell the title as in the book? Check the exercises on Chapter 8 for the expected title.{FAILURE_FOOTER}")
-    
     def test_for_links_in_base(self):
-        """
-        There should be three hyperlinks in base.html, as per the specification of the book.
-        Check for their presence, along with correct use of URL lookups.
-        """
-        template_str = self.get_template(os.path.join(settings.TEMPLATE_DIR, 'rango', 'base.html'))
+        template_str = self.get_template(os.path.join(settings.TEMPLATE_DIR, 'YouHate', 'base.html'))
 
         look_for = [
-            '<a href="{% url \'rango:add_category\' %}">Add a New Category</a>',
-            '<a href="{% url \'rango:about\' %}">About</a>',
-            '<a href="{% url \'rango:index\' %}">Index</a>',
+            '"{% url \'about\' %}"',
+            '"{% url \'user_profile\' baseCurrentUser %}"',
+            '"{% url \'login\' %}"',
+            '"{% url \'index\' %}"',
+            '"{% url \'random_video\' %}"',
+            '"{% url \'category_detail\' slug %}"',
         ]
         
         for lookup in look_for:
-            self.assertTrue(lookup in template_str, f"{FAILURE_HEADER}In base.html, we couldn't find the hyperlink '{lookup}'. Check your markup in base.html is correct and as written in the book.{FAILURE_FOOTER}")
+            self.assertTrue(lookup in template_str, f"{FAILURE_HEADER}In base.html, failed to find '{lookup}'.{FAILURE_FOOTER}")
