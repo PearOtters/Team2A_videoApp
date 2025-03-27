@@ -16,7 +16,7 @@ def index(request):
     try:
         context_dict['categories'] = Category.objects.order_by('-video_count')[:5]
         context_dict['videos'] = Video.objects.all()
-        context_dict['recentVideos'] = Video.objects.order_by('created')[:10]
+        context_dict['recentVideos'] = Video.objects.order_by('-created')[:10]
     except Category.DoesNotExist:
         context_dict['categories'] = None
         context_dict['videos'] = None
@@ -32,7 +32,7 @@ def category_detail(request, category_slug):
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
         context_dict['videos'] = videos
-        context_dict['recentVideos'] = videos.order_by('created')
+        context_dict['recentVideos'] = videos.order_by('-created')
         context_dict['dislikedVideos'] = videos.order_by('-dislikes')
         context_dict['mostViewedVideos'] = videos.order_by('-views')
         context_dict['leastViewedVideos'] = videos.order_by('views')
@@ -162,7 +162,7 @@ def user_logout(request):
 def user_profile(request, username):
     context_dict = {}
     user_profile = UserProfile.objects.get(user__username=username)
-    videos = Video.objects.filter(user=user_profile).order_by('created')
+    videos = Video.objects.filter(user=user_profile).order_by('-created')
     categories = Category.objects.values_list('name', flat=True)
     top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
 
@@ -173,8 +173,6 @@ def user_profile(request, username):
 
     context_dict['user_profile'] = user_profile
     context_dict['videos'] = videos
-    context_dict['baseCategoryNames'] = categories
-    context_dict['baseTop5Categories'] = top5
 
     return base(request, 'YouHate/profile.html', context_dict)
 
