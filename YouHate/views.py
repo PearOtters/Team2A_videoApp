@@ -52,6 +52,7 @@ def video_detail(request, category_slug, video_slug):
         if hasVideo:
             thisVideo = videos.filter(slug=video_slug)[0]
         currentUser = None
+        currentUserProfile = None
         ratio = 0
         if request.user.is_authenticated:
             currentUser = request.user
@@ -67,6 +68,10 @@ def video_detail(request, category_slug, video_slug):
         if hasVideo:
             thisVideo.views += 1
             thisVideo.save()
+
+            if currentUserProfile:
+                currentUserProfile.score += 1
+                currentUserProfile.save()
 
             if thisVideo.likes > 0:
                 ratio = (thisVideo.dislikes / thisVideo.likes) * 100
@@ -102,6 +107,13 @@ def base(request, url, context_dic):
         context_dic['baseTop5Categories'] = top5
     except Category.DoesNotExist:
         context_dic['baseCategoryNames'] = None
+
+    try:
+        baseTopUsers = UserProfile.objects.order_by('-score')[:3]
+        context_dic['baseTopUsers'] = baseTopUsers
+    except:
+        context_dic['baseTopUsers'] = None
+    
     return render(request, url, context=context_dic)
 
 def sort_videos(request):

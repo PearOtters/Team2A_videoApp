@@ -86,7 +86,29 @@
         </main>
         <footer>
             <hr />
-            <p>footer</p>
+            {% if baseTopUsers %}
+                <div class="top3-profiles">
+                    {% for user in baseTopUsers %}
+                        <div class="top3-profile-container">
+                            <div class="top3-profile">
+                                <a href="{% url 'user_profile' user.user.username %}" class="user-link">
+                                    <p class="top3-profile-username">{{ user.user.username }} : {{ user.score }}</p>
+                                    <img src="{{ user.profile_picture.url }}" class="top3-profile-pic" alt="Profile Picture" width="60px" height="60px">
+                                </a>
+                                {% if forloop.counter == 1 %}
+                                    <img src="{% static 'images/gold_trophy.png' %}" class="trophy" alt="Gold trophy" width="80px" height="80px">
+                                {% elif forloop.counter == 2 %}
+                                    <img src="{% static 'images/silver_trophy.png' %}" class="trophy" alt="Silver trophy" width="80px" height="80px">
+                                {% else %}
+                                    <img src="{% static 'images/bronze_trophy.png' %}" class="trophy" alt="Silver trophy" width="80px" height="80px">
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No top users</p>
+            {% endif %}
         </footer>
     </body>
 </html>
