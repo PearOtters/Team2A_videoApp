@@ -53,6 +53,7 @@ def video_detail(request, category_slug, video_slug):
         if hasVideo:
             thisVideo = videos.filter(slug=video_slug)[0]
         currentUser = None
+        currentUserProfile = None
         ratio = 0
         if request.user.is_authenticated:
             currentUser = request.user
@@ -69,10 +70,14 @@ def video_detail(request, category_slug, video_slug):
             thisVideo.views += 1
             thisVideo.save()
 
+            if currentUserProfile:
+                currentUserProfile.score += 1
+                currentUserProfile.save()
+
             if thisVideo.likes > 0:
-                ratio = (thisVideo.dislikes / thisVideo.likes) * 100
+                ratio = (thisVideo.dislikes / thisVideo.likes)
             elif thisVideo.dislikes > 0:
-                ratio = 100
+                ratio = 1
 
         suggested = videos.order_by('-dislikes')
 
@@ -103,6 +108,13 @@ def base(request, url, context_dic):
         context_dic['baseTop5Categories'] = top5
     except Category.DoesNotExist:
         context_dic['baseCategoryNames'] = None
+
+    try:
+        baseTopUsers = UserProfile.objects.order_by('-score')[:3]
+        context_dic['baseTopUsers'] = baseTopUsers
+    except:
+        context_dic['baseTopUsers'] = None
+    
     return render(request, url, context=context_dic)
 
 def sort_videos(request):
@@ -352,9 +364,7 @@ def sign_in_view(request):
             login_form = AuthenticationForm(data=request.POST)
             if login_form.is_valid():
                 username = login_form.cleaned_data['username']
-                print(username)
                 password = login_form.cleaned_data['password']
-                print(password)
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)

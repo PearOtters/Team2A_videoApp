@@ -189,6 +189,35 @@ footer {
     top: 10vh;
     grid-area: footer;
     text-align: center;
-    width: 100%;
+    width: 97%;
     padding: 1rem;
+}
+
+.top3-profiles {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.top3-profile-container {
+    text-align: center;
+}
+
+.top3-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top3-profile-username {
+    margin-bottom: 0px;
+}
+
+.trophy {
+    margin-top: 10px;
+}
+
+.user-link {
+    text-decoration: none;
+    color: black;
 }
