@@ -100,7 +100,7 @@
                     <p class="video-views">Views: {{ thisVideo.views }}</p>
                     <p class="video-published">Published: {{ thisVideo.created|date:"d.m.Y" }}</p>
                     <p class="video-dislikes">Dislikes: {{ thisVideo.dislikes }}</p>
-                    <p class="video-dislikes-to-like-ratio"> Dislikes to likes ratio: {{ ratio|floatformat:2 }}%</p>
+                    <p class="video-dislikes-to-like-ratio"> Dislikes per likes: {{ ratio|floatformat:2 }}</p>
                 </div>
                 <br>
                 <div class="like-dislike-button">
