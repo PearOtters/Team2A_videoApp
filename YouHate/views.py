@@ -43,11 +43,17 @@ def category_detail(request, category_slug):
 
 def video_detail(request, category_slug, video_slug):
     context_dict = {}
+    hasVideo = False
     try:
         category = Category.objects.get(slug=category_slug)
         videos = Video.objects.filter(category=category)
-        thisVideo = videos.filter(slug=video_slug)[0]
+        hasVideo = videos.filter(slug=video_slug).exists()
+        thisVideo = None
+        if hasVideo:
+            thisVideo = videos.filter(slug=video_slug)[0]
         currentUser = None
+        currentUserProfile = None
+        ratio = 0
         if request.user.is_authenticated:
             currentUser = request.user
             try:
@@ -59,16 +65,22 @@ def video_detail(request, category_slug, video_slug):
             except UserProfile.DoesNotExist:
                 currentUserProfile = None
 
-        thisVideo.views += 1
-        thisVideo.save()
+        if hasVideo:
+            thisVideo.views += 1
+            thisVideo.save()
+
+            if currentUserProfile:
+                currentUserProfile.score += 1
+                currentUserProfile.save()
+
+            if thisVideo.likes > 0:
+                ratio = (thisVideo.dislikes / thisVideo.likes) * 100
+            elif thisVideo.dislikes > 0:
+                ratio = 100
 
         suggested = videos.order_by('-dislikes')
-        ratio = 0
-        if thisVideo.likes > 0:
-            ratio = (thisVideo.dislikes / thisVideo.likes) * 100
-        elif thisVideo.dislikes > 0:
-            ratio = 100
 
+        context_dict['hasVideo'] = hasVideo
         context_dict['currentUser'] = currentUser
         context_dict['ratio'] = ratio
         context_dict['comments'] = Comment.objects.filter(video=thisVideo)
@@ -85,12 +97,23 @@ def video_detail(request, category_slug, video_slug):
 
 def base(request, url, context_dic):
     try:
+        context_dic['baseCurrentUser'] = None
+        if request.user.is_authenticated:
+            context_dic['baseCurrentUser'] = request.user.username
+
         categories = Category.objects.values_list('slug', 'name').order_by('name')
         top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
         context_dic['baseCategoryNames'] = categories
         context_dic['baseTop5Categories'] = top5
     except Category.DoesNotExist:
         context_dic['baseCategoryNames'] = None
+
+    try:
+        baseTopUsers = UserProfile.objects.order_by('-score')[:3]
+        context_dic['baseTopUsers'] = baseTopUsers
+    except:
+        context_dic['baseTopUsers'] = None
+    
     return render(request, url, context=context_dic)
 
 def sort_videos(request):
@@ -141,6 +164,12 @@ def user_profile(request, username):
     videos = Video.objects.filter(user=user_profile).order_by('created')
     categories = Category.objects.values_list('name', flat=True)
     top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
+
+    context_dict['isCurrent'] = False
+    if request.user.is_authenticated:
+        if request.user.username == username:
+            context_dict['isCurrent'] = True
+
     context_dict['user_profile'] = user_profile
     context_dict['videos'] = videos
     context_dict['baseCategoryNames'] = categories

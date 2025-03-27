@@ -6,129 +6,133 @@
 {% endblock %}
 
 {% block body_block %}
-    <div id="videoPageContainer">
-        <div id="videoContainer">
-        {% if thisVideo %}
-            <video id="video" controls>
-                <source src="{{ thisVideo.video.url }}" type="video/mp4">
-            </video>
-        {% endif %}
-        </div>
-        <div id="suggested">
-            <h2>We Suggest</h2>
-            {% if suggestedVideo != thisVideo %}
-                <div class="suggestedBlock">
-                    <div class="suggestedThumbnail" style="max-height:20vh">
-                        <a href="{% url 'video_detail' suggestedVideo.category.slug suggestedVideo.slug %}"><img src="{{ suggestedVideo.thumbnail.url }}" alt=""></img></a>
-                    </div>
-                    <div class="commentInfo">
-                        <p class="creator">{{ suggestedVideo.user.user.username }}</p>
-                        <p class="published">{{ suggestedVideo.created|date:"d.m.Y" }}</p>
-                        <p class="dislikes">Dislikes: {{ suggestedVideo.dislikes }}</p>
-                        <p class="views">Views: {{ suggestedVideo.views }}</p>
-                    </div>
-                    <h3>{{ suggestedVideo.title }}</h3>
-                </div>        
-            {% else %}
-                <div class="videoBlock">
-                    <p>There are no videos worse than this one</p>
-                </div>
-            {% endif %}
-        </div>
-        <div></div>
-        <div id="comments">
-            <h2>Comments</h2>
-            <div id="commentsScroll">
-            {% if comments %}
-                {% for c in comments %}
-                    <div class="comment">
-                        <div class="commentUser"><a href="{% url 'user_profile' c.user.user.username %}">
-                        <p>
-                            {{ c.user.user.username }}<br>
-                            <img src="{{ c.user.profile_picture.url }}" alt="Profile Picture" style="width:70%; max-height:50%"></img>
-                        </p>
-                        </a></div>
-                        <div class="commentBody"><p>{{ c.body }}</p></div>
-                    </div>
-                    {% if user.is_authenticated %}
-                        <div id="replyForm">
-                            <form action="{% url 'add_reply' c.id thisVideo.id %}" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="video_id" value="{{ thisVideo.id }}">
-                                <input type="hidden" name="comment_id" value="{{ c.id }}">
-                                <textarea name="body" id="reply" placeholder="Reply"></textarea>
-                                <input type="submit" value="Submit">
-                            </form>
-                        </div>
-                    {% endif %}
-                    {% for r in replies %}
-                        {% if r.comment == c %}
-                            <div class="reply">
-                                <div class="replyUser"><a href="{% url 'user_profile' r.user.user.username %}"><p>{{ r.user.user.username }}</p></a></div>
-                                <div class="replyBody"><p>{{ r.body }}</p></div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}<br>
-                {% endfor %}
-            {% else %}
-            <p>No comments yet</p>
+    {% if hasVideo %}
+        <div id="videoPageContainer">
+            <div id="videoContainer">
+            {% if thisVideo %}
+                <video id="video" controls>
+                    <source src="{{ thisVideo.video.url }}" type="video/mp4">
+                </video>
             {% endif %}
             </div>
-            {% if user.is_authenticated %}
-                <div id="commentForm">
-                    <form action="{% url 'add_comment' thisVideo.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{ thisVideo.id }}">
-                        <textarea name="body" id="comment" placeholder="Comment"></textarea>
-                        <input type="submit" value="Submit">
-                    </form>
-                </div>
-            {% endif %}
-            {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                            {{ message }}
+            <div id="suggested">
+                <h2>We Suggest</h2>
+                {% if suggestedVideo != thisVideo %}
+                    <div class="suggestedBlock">
+                        <div class="suggestedThumbnail" style="max-height:20vh">
+                            <a href="{% url 'video_detail' suggestedVideo.category.slug suggestedVideo.slug %}"><img src="{{ suggestedVideo.thumbnail.url }}" alt=""></img></a>
                         </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-        <div id="videoInformation">
-            <div id="video-stats">
-                <p class="video-views">Views: {{ thisVideo.views }}</p>
-                <p class="video-published">Published: {{ thisVideo.created|date:"d.m.Y" }}</p>
-                <p class="video-dislikes">Dislikes: {{ thisVideo.dislikes }}</p>
-                <p class="video-dislikes-to-like-ratio"> Dislikes to likes ratio: {{ ratio|floatformat:2 }}%</p>
-            </div>
-            <br>
-            <div class="like-dislike-button">
-                {% if user.is_authenticated %}
-                    {% if liked %}
-                        <button id="like-button" class="red" onclick="likeVideo()">Like</button>
-                    {% else %}
-                        <button id="like-button" onclick="likeVideo()">Like</button>
-                    {% endif %}
-                    {% if disliked %}
-                        <button id="dislike-button" class="red" onclick="dislikeVideo()">Dislike</button>
-                    {% else %}
-                        <button id="dislike-button" onclick="dislikeVideo()">Dislike</button>
-                    {% endif %}
+                        <div class="commentInfo">
+                            <p class="creator">{{ suggestedVideo.user.user.username }}</p>
+                            <p class="published">{{ suggestedVideo.created|date:"d.m.Y" }}</p>
+                            <p class="dislikes">Dislikes: {{ suggestedVideo.dislikes }}</p>
+                            <p class="views">Views: {{ suggestedVideo.views }}</p>
+                        </div>
+                        <h3>{{ suggestedVideo.title }}</h3>
+                    </div>        
+                {% else %}
+                    <div class="videoBlock">
+                        <p>There are no videos worse than this one</p>
+                    </div>
                 {% endif %}
             </div>
-            <br>
-            <div id="user">
-                <a href="{% url 'user_profile' thisVideo.user.user.username %}">
-                    <h2>{{ thisVideo.user.user.username }}</h2>
-                    <img id="profilePicture" src="{{ thisVideo.user.profile_picture.url }}" alt="Profile">
-                </a>
+            <div></div>
+            <div id="comments">
+                <h2>Comments</h2>
+                <div id="commentsScroll">
+                {% if comments %}
+                    {% for c in comments %}
+                        <div class="comment">
+                            <div class="commentUser"><a href="{% url 'user_profile' c.user.user.username %}">
+                            <p>
+                                {{ c.user.user.username }}<br>
+                                <img src="{{ c.user.profile_picture.url }}" alt="Profile Picture" style="width:70%; max-height:50%"></img>
+                            </p>
+                            </a></div>
+                            <div class="commentBody"><p>{{ c.body }}</p></div>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <div id="replyForm">
+                                <form action="{% url 'add_reply' c.id thisVideo.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="video_id" value="{{ thisVideo.id }}">
+                                    <input type="hidden" name="comment_id" value="{{ c.id }}">
+                                    <textarea name="body" id="reply" placeholder="Reply"></textarea>
+                                    <input type="submit" value="Submit">
+                                </form>
+                            </div>
+                        {% endif %}
+                        {% for r in replies %}
+                            {% if r.comment == c %}
+                                <div class="reply">
+                                    <div class="replyUser"><a href="{% url 'user_profile' r.user.user.username %}"><p>{{ r.user.user.username }}</p></a></div>
+                                    <div class="replyBody"><p>{{ r.body }}</p></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}<br>
+                    {% endfor %}
+                {% else %}
+                <p>No comments yet</p>
+                {% endif %}
+                </div>
+                {% if user.is_authenticated %}
+                    <div id="commentForm">
+                        <form action="{% url 'add_comment' thisVideo.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="video_id" value="{{ thisVideo.id }}">
+                            <textarea name="body" id="comment" placeholder="Comment"></textarea>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                {% endif %}
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-            <div id="description">
-                <h2>{{ thisVideo.title }}</h2>
-                <p>{{ thisVideo.description }}</p>
+            <div id="videoInformation">
+                <div id="video-stats">
+                    <p class="video-views">Views: {{ thisVideo.views }}</p>
+                    <p class="video-published">Published: {{ thisVideo.created|date:"d.m.Y" }}</p>
+                    <p class="video-dislikes">Dislikes: {{ thisVideo.dislikes }}</p>
+                    <p class="video-dislikes-to-like-ratio"> Dislikes to likes ratio: {{ ratio|floatformat:2 }}%</p>
+                </div>
+                <br>
+                <div class="like-dislike-button">
+                    {% if user.is_authenticated %}
+                        {% if liked %}
+                            <button id="like-button" class="red" onclick="likeVideo()">Like</button>
+                        {% else %}
+                            <button id="like-button" onclick="likeVideo()">Like</button>
+                        {% endif %}
+                        {% if disliked %}
+                            <button id="dislike-button" class="red" onclick="dislikeVideo()">Dislike</button>
+                        {% else %}
+                            <button id="dislike-button" onclick="dislikeVideo()">Dislike</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <br>
+                <div id="user">
+                    <a href="{% url 'user_profile' thisVideo.user.user.username %}">
+                        <h2>{{ thisVideo.user.user.username }}</h2>
+                        <img id="profilePicture" src="{{ thisVideo.user.profile_picture.url }}" alt="Profile">
+                    </a>
+                </div>
+                <div id="description">
+                    <h2>{{ thisVideo.title }}</h2>
+                    <p>{{ thisVideo.description }}</p>
+                </div>
             </div>
         </div>
-    </div>
+    {% else %}
+        <p>Video not found.</p>
+    {% endif %}
     <script>
         function getCsrfToken() {
             const cookieValue = document.cookie
