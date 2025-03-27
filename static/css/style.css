@@ -402,6 +402,10 @@ footer {
   font-size: 30px;
 }
 
+#like-button {
+  margin-top: 10px;
+}
+
 #uploadButton {
   display: flex;
   justify-content: flex-start;
