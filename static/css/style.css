@@ -1,3 +1,79 @@
+@media (prefers-color-scheme: dark) {
+  body, html {
+    background-color: #121212;
+    color: #f0f0f0;
+  }
+
+  header,
+  footer,
+  aside {
+    background-color: #1e1e1e !important;
+    color: #f0f0f0 !important;
+    border-color: #333 !important;
+  }
+
+  .headerLinks {
+    border-color: #333 !important;
+  }
+
+  a {
+    color: #bb86fc;
+  }
+
+  a:hover {
+    color: #ffffff !important;
+  }
+
+  #goBtn {
+    background-color: #6200ee;
+  }
+
+  #randomiseBtn {
+    background-color: #cf6679;
+  }
+
+  #vSearch,
+  #filterDropDown {
+    background-color: #2c2c2c;
+    color: white;
+  }
+
+  .comment,
+  .reply,
+  .videoBlock,
+  .suggestedBlock,
+  .videoThumbnail,
+  .bio-container,
+  .about-rectangle {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #444;
+  }
+
+  .profile-header h1,
+  .bio-container h3,
+  .bio-container p,
+  .videoThumbnail h3 {
+    color: #e0e0e0;
+  }
+
+  .videoBlock::-webkit-scrollbar-track,
+  #commentsScroll::-webkit-scrollbar-track {
+    background: #2a2a2a;
+  }
+
+  .videoBlock::-webkit-scrollbar-thumb,
+  #commentsScroll::-webkit-scrollbar-thumb {
+    background: #555;
+  }
+
+  .videoBlock::-webkit-scrollbar-thumb:hover,
+  #commentsScroll::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
+}
+
+
 html, body {
   height: 100%;
   margin: 0;
@@ -13,6 +89,33 @@ header {
 main {
   flex: 1;
   padding: 20px;
+}
+
+h1, h2, h3 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+p {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+a {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: inherit;
+}
+
+a:hover {
+  color: gray !important;
+}
+
+a:visited {
+  color: inherit;
 }
 
 .videoBlock {

@@ -335,9 +335,7 @@ def sign_in_view(request):
             login_form = AuthenticationForm(data=request.POST)
             if login_form.is_valid():
                 username = login_form.cleaned_data['username']
-                print(username)
                 password = login_form.cleaned_data['password']
-                print(password)
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
