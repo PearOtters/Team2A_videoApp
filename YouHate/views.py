@@ -69,9 +69,9 @@ def video_detail(request, category_slug, video_slug):
             thisVideo.save()
 
             if thisVideo.likes > 0:
-                ratio = (thisVideo.dislikes / thisVideo.likes) * 100
+                ratio = (thisVideo.dislikes / thisVideo.likes)
             elif thisVideo.dislikes > 0:
-                ratio = 100
+                ratio = 1
 
         suggested = videos.order_by('-dislikes')
 
