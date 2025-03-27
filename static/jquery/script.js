@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".videoBlock").on("scroll", function (event) {
+    $(".videoBlock").on("wheel", function (event) {
         event.preventDefault();
         
         let scrollAmount = event.originalEvent.deltaY || event.originalEvent.deltaX; 
