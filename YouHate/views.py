@@ -257,9 +257,9 @@ def likeDislikeHelper(request, add):
             video.save()
             ratio = 0
             if video.likes > 0:
-                ratio = (video.dislikes / video.likes) * 100
+                ratio = (video.dislikes / video.likes) 
             elif video.dislikes > 0:
-                ratio = 100
+                ratio = 1
             
             return JsonResponse({
                 'success': True,
