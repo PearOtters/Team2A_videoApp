@@ -1,6 +1,6 @@
 import os
 import importlib
-from populate_YouHate import populate
+from population_script import populate
 from YouHate.models import Category, Video, Comment, UserProfile, User
 from django.urls import reverse
 from django.test import TestCase
