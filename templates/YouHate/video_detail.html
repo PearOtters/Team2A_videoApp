@@ -19,7 +19,7 @@
                 <h2>We Suggest</h2>
                 {% if suggestedVideo != thisVideo %}
                     <div class="suggestedBlock">
-                        <div class="suggestedThumbnail" style="max-height:20vh">
+                        <div class="suggestedThumbnail">
                             <a href="{% url 'video_detail' suggestedVideo.category.slug suggestedVideo.slug %}"><img src="{{ suggestedVideo.thumbnail.url }}" alt=""></img></a>
                         </div>
                         <div class="commentInfo">
@@ -28,7 +28,7 @@
                             <p class="dislikes">Dislikes: {{ suggestedVideo.dislikes }}</p>
                             <p class="views">Views: {{ suggestedVideo.views }}</p>
                         </div>
-                        <h3>{{ suggestedVideo.title }}</h3>
+                            <h3>{{ suggestedVideo.title }}</h3>
                     </div>        
                 {% else %}
                     <div class="videoBlock">
