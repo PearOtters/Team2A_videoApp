@@ -15,7 +15,7 @@ def index(request):
     context_dict = {}
     try:
         context_dict['categories'] = Category.objects.order_by('-video_count')[:5]
-        context_dict['videos'] = Video.objects.all()
+        context_dict['videos'] = Video.objects.order_by('-dislikes')
         context_dict['recentVideos'] = Video.objects.order_by('-created')[:10]
     except Category.DoesNotExist:
         context_dict['categories'] = None
@@ -162,7 +162,7 @@ def user_logout(request):
 def user_profile(request, username):
     context_dict = {}
     user_profile = UserProfile.objects.get(user__username=username)
-    videos = Video.objects.filter(user=user_profile).order_by('-created')
+    videos = Video.objects.filter(user=user_profile).order_by('-dislikes')
     categories = Category.objects.values_list('name', flat=True)
     top5 = Category.objects.values_list('slug', 'name').order_by('-video_count')[:5]
 
